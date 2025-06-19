@@ -5,7 +5,7 @@ import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/utils/helpers.dart';
-import 'package:warehouse_management/Screens/edit_Item.dart';
+import 'package:warehouse_management/view/screens/edit_item.dart';
 import 'package:warehouse_management/view/widgets/info_row.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 

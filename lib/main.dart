@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/sales_provider.dart';
+import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 
 
 
@@ -23,7 +24,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => BrandProvider()),
         ChangeNotifierProvider(create: (_) => SalesProvider()),
-
+        ChangeNotifierProvider(create: (_) => SummaryViewModel()),
       ],
       child: MyApp(isLoggedIn: isLoggedIn),
     ),

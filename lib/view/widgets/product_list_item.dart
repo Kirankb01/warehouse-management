@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/view/screens/items_details.dart';
 
@@ -22,7 +23,7 @@ class ProductListItem extends StatelessWidget {
         );
       },
       child: Card(
-        color: Colors.white,
+        color: AppColors.card,
         margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
         elevation: 2,
         child: SizedBox(

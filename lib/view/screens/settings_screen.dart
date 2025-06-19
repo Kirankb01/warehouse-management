@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:warehouse_management/Screens/login_screen.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/utils/helpers.dart';
+import 'package:warehouse_management/view/screens/login_screen.dart';
 
 
 class SettingsScreen extends StatefulWidget {

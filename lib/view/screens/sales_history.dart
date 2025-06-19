@@ -14,7 +14,7 @@ class SalesHistoryTab extends StatefulWidget {
 
 class _SalesHistoryTabState extends State<SalesHistoryTab> {
   String _searchText = '';
-  String _selectedFilter = 'All';
+  String _selectedFilter = 'Today';
 
   final List<String> _filters = ['All', 'Today', 'Last Week', 'Last Month'];
 

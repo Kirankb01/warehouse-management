@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/Screens/items_screen.dart';
-import 'package:warehouse_management/Screens/login_screen.dart';
+import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/view/screens/account_details.dart';
 import 'package:warehouse_management/view/screens/edit_account_details.dart';
+import 'package:warehouse_management/view/screens/items_screen.dart';
+import 'package:warehouse_management/view/screens/login_screen.dart';
 import 'package:warehouse_management/view/screens/nav_bar_screen.dart';
 import 'package:warehouse_management/view/screens/notification_screen.dart';
 import 'package:warehouse_management/view/screens/onboard_screen.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'StockHub',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.themeDataColor),
       ),
       initialRoute: isLoggedIn ? '/homepage' : '/login',
       debugShowCheckedModeBanner: false,

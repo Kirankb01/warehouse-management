@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/Screens/addItem.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/utils/helpers.dart';
+import 'package:warehouse_management/view/screens/add_item.dart';
 import 'package:warehouse_management/view/widgets/product_grid_item.dart';
 import 'package:warehouse_management/view/widgets/product_list_item.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';

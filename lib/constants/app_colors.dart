@@ -25,6 +25,8 @@ class AppColors {
   static const Color darkModeButtonColor = Color(0xFF90CAF9);
   static const Color userManualIcon = Colors.indigo;
   static const Color lightGrey300 = Color(0xFFE0E0E0);
-
+  static const Color themeDataColor = Colors.deepPurple;
+  static const Color semiTransparentBlack = Color.fromRGBO(0, 0, 0, 0.5);
+  static const Color softWhiteBlue = Color(0xFFF7F9FC);
 
 }

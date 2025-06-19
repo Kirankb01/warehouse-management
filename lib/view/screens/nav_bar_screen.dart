@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/Screens/dashboard_screen.dart';
-import 'package:warehouse_management/Screens/items_screen.dart';
-import 'package:warehouse_management/Screens/history_screen.dart';
-import 'package:warehouse_management/Screens/selling_screen.dart';
-import 'package:warehouse_management/Screens/settings_screen.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/view/screens/dashboard_screen.dart';
+import 'package:warehouse_management/view/screens/history_screen.dart';
+import 'package:warehouse_management/view/screens/items_screen.dart';
+import 'package:warehouse_management/view/screens/selling_screen.dart';
+import 'package:warehouse_management/view/screens/settings_screen.dart';
 
 
 class BottomNavBar extends StatefulWidget {

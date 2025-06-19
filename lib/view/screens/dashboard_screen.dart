@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/view/screens/summary_view.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
-
-// import 'package:warehouse_management/widgets/cartesian_chart.dart';
-
+import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -18,7 +17,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String selectedFilter = 'Today';
   String selectedPieFilter = 'This Week';
 
-  final List<String> filters = ['Today', 'This Week', 'This Month'];
+  // final List<String> filters = ['Today', 'This Week', 'This Month'];
   final List<String> chartFilters = [
     'This Week',
     'Last Week',
@@ -26,24 +25,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
     'Last 3 Month',
   ];
 
-  // final List<SalesData> data = [
-  //   SalesData('Jan', 12000.0),
-  //   SalesData('Feb', 15000.0),
-  //   SalesData('Mar', 18000.0),
-  //   SalesData('Apr', 14000.0),
-  //   SalesData('May', 20000.0),
-  // ];
-
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<SummaryViewModel>(context, listen: false).loadSummaryData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    // Get the global SummaryViewModel and initialize screen size once
+    final summaryVM = Provider.of<SummaryViewModel>(context);
+    summaryVM.initScreenSize(screenWidth, screenHeight);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.card,
         title: Text('Welcome KB Stores', style: AppTextStyles.appBarText),
+        elevation: 0,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 25),
@@ -54,138 +58,71 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Container(
-                constraints: BoxConstraints(minHeight: 180),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColors.summaryContainer,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.card, // Same as AppBar
+              AppColors.background, // Your off-white background
+            ],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Container(
+                  constraints: BoxConstraints(minHeight: 180),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.summaryContainer,
+                  ),
+                  child: SummaryView(
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
+                  ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(screenWidth * 0.03),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Left Column
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: screenHeight * 0.008),
-                          Text('Summary', style: AppTextStyles.heading),
-                          SizedBox(height: screenHeight * 0.012),
-                          Text(
-                            'Sold Quantities',
-                            style: TextStyle(color: AppColors.pureWhite),
-                          ),
-                          SizedBox(height: screenHeight * 0.006),
-                          Text('53', style: AppTextStyles.dashBoardText),
-                          SizedBox(height: screenHeight * 0.012),
-                          Text(
-                            'Earnings [INR]',
-                            style: TextStyle(color: AppColors.pureWhite),
-                          ),
-                          SizedBox(height: screenHeight * 0.006),
-                          Text('25000', style: AppTextStyles.dashBoardText),
-                        ],
-                      ),
-                      Spacer(),
-                      // Right Column
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.03),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.filter_alt_outlined,
-                                  color: AppColors.pureWhite,
-                                ),
-                                SizedBox(width: screenWidth * 0.02),
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    value: selectedFilter,
-                                    dropdownColor: Colors.blueGrey,
-                                    iconEnabledColor: AppColors.pureWhite,
-                                    style: TextStyle(
-                                      color: AppColors.pureWhite,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedFilter = newValue!;
-                                      });
-                                    },
-                                    items:
-                                        filters.map<DropdownMenuItem<String>>((
-                                          String value,
-                                        ) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ],
+                SizedBox(height: screenHeight * 0.012),
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, '/allItems'),
+                  child: Consumer<ProductProvider>(
+                    builder: (context, provider, _) {
+                      final productCount = provider.products.length;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Card(
+                          color: AppColors.pureWhite,
+                          child: ListTile(
+                            leading: Icon(Icons.card_travel),
+                            title: Text('All Items'),
+                            subtitle: Text('$productCount items available'),
+                            trailing: Icon(
+                              Icons.arrow_forward,
+                              color: AppColors.primary,
+                              size: 16,
                             ),
                           ),
-                          Text(
-                            'Purchased Quantities',
-                            style: TextStyle(color: AppColors.pureWhite),
-                          ),
-                          SizedBox(height: screenHeight * 0.006),
-                          Text('85', style: AppTextStyles.dashBoardText),
-                          SizedBox(height: screenHeight * 0.012),
-                          Text(
-                            'Spendings [INR]',
-                            style: TextStyle(color: AppColors.pureWhite),
-                          ),
-                          SizedBox(height: screenHeight * 0.006),
-                          Text('15000', style: AppTextStyles.dashBoardText),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: screenHeight * 0.012),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/allItems'),
-                child: Consumer<ProductProvider>(
-                  builder: (context, provider, _) {
-                    final productCount = provider.products.length;
-                    return Card(
-                      color: AppColors.pureWhite,
-                      child: ListTile(
-                        leading: Icon(Icons.card_travel),
-                        title: Text('All Items'),
-                        subtitle: Text('$productCount items available'),
-                        trailing: Icon(
-                          Icons.arrow_forward,
-                          color: AppColors.primary,
-                          size: 16,
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: screenHeight * 0.029),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Analytics',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                      );
+                    },
                   ),
-                  SizedBox(
-                    child: Row(
+                ),
+                SizedBox(height: screenHeight * 0.029),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Analytics',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19,
+                      ),
+                    ),
+                    Row(
                       children: [
                         Icon(
                           Icons.filter_alt_outlined,
@@ -205,9 +142,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               });
                             },
                             items:
-                                chartFilters.map<DropdownMenuItem<String>>((
-                                  String value,
-                                ) {
+                                chartFilters.map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -217,13 +152,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: screenHeight * 0.020),
-              // Card(color: Colors.white, child: buildSalesChart(data)),
-
-            ],
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.020),
+                // Card(color: Colors.white, child: buildSalesChart(data)),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -45,7 +44,11 @@ class AppTextStyles {
     color: Colors.black87,
   );
 
-  static const sectionTitle = TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87);
+  static const sectionTitle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.black87,
+  );
   static const label = TextStyle(color: Colors.black87, fontSize: 14);
   static const bodyText = TextStyle(fontSize: 14, color: Colors.black87);
 }

@@ -10,6 +10,7 @@ import 'package:warehouse_management/view/widgets/custom_text_field.dart';
 import 'package:warehouse_management/view/widgets/image_picker_box.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
+import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 
 
 
@@ -74,7 +75,9 @@ class _AddItemState extends State<AddItem> {
         price: double.tryParse(costPriceController.text.trim()) ?? 0.0,
         dateTime: DateTime.now(),
       );
+
       await purchaseBox.add(purchase);
+      Provider.of<SummaryViewModel>(context, listen: false).loadSummaryData();
 
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(

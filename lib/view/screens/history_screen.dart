@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/Screens/purchase_history.dart';
-import 'package:warehouse_management/Screens/sales_history.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/view/screens/purchase_history.dart';
+import 'package:warehouse_management/view/screens/sales_history.dart';
 
 
 class HistoryScreen extends StatefulWidget {

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/view/screens/items_details.dart';
 
@@ -25,7 +26,7 @@ class ProductGridItem extends StatelessWidget {
         );
       },
       child: Card(
-        color: Colors.white,
+        color: AppColors.card,
         elevation: 2,
         child: Center(
           child: Column(

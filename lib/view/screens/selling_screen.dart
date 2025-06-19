@@ -4,8 +4,11 @@ import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/models/sale.dart';
+import 'package:warehouse_management/view/widgets/sale_item_form_card.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/sales_provider.dart';
+import 'package:warehouse_management/viewmodel/summary_view_model.dart';
+import 'package:warehouse_management/utils/helpers.dart';
 
 class SellScreen extends StatefulWidget {
   const SellScreen({super.key});
@@ -34,11 +37,7 @@ class _SellScreenState extends State<SellScreen> {
     price.addListener(_calculateTotal);
 
     setState(() {
-      items.add({
-        'product': product,
-        'quantity': quantity,
-        'price': price,
-      });
+      items.add({'product': product, 'quantity': quantity, 'price': price});
     });
 
     _calculateTotal();
@@ -72,25 +71,32 @@ class _SellScreenState extends State<SellScreen> {
     final customerName = customerNameController.text.trim();
 
     if (customerName.isEmpty) {
-      _showSnackBar("Please enter customer name");
+      showSnackBar(context, "Please enter customer name");
       return;
     }
 
-    bool hasInvalid = items.any((item) =>
-    item['product']!.text.trim().isEmpty ||
-        int.tryParse(item['quantity']!.text) == null ||
-        double.tryParse(item['price']!.text) == null);
+    bool hasInvalid = items.any(
+      (item) =>
+          item['product']!.text.trim().isEmpty ||
+          int.tryParse(item['quantity']!.text) == null ||
+          double.tryParse(item['price']!.text) == null,
+    );
 
     if (hasInvalid) {
-      _showSnackBar("Please enter valid product details");
+      showSnackBar(context, "Please enter valid product details");
       return;
     }
 
-    final saleItems = items.map((item) => SaleItem(
-      productName: item['product']!.text,
-      quantity: int.parse(item['quantity']!.text),
-      price: double.parse(item['price']!.text),
-    )).toList();
+    final saleItems =
+        items
+            .map(
+              (item) => SaleItem(
+                productName: item['product']!.text,
+                quantity: int.parse(item['quantity']!.text),
+                price: double.parse(item['price']!.text),
+              ),
+            )
+            .toList();
 
     final sale = Sale(
       customerName: customerName,
@@ -101,22 +107,20 @@ class _SellScreenState extends State<SellScreen> {
 
     final saleProvider = Provider.of<SalesProvider>(context, listen: false);
     await saleProvider.addSale(sale);
+    Provider.of<SummaryViewModel>(context, listen: false).loadSummaryData();
 
-    _showSnackBar("Sale submitted successfully! Total: ₹${total.toStringAsFixed(2)}");
+    showSuccessSnackBar(
+      context,
+      "Sale submitted successfully! Total: ₹${total.toStringAsFixed(2)}",
+    );
 
-    // ✅ Clear inputs after saving the sale
+    // Clear inputs after saving the sale
     customerNameController.clear();
     setState(() {
       items.clear();
       _addNewItem();
       total = 0.0;
     });
-  }
-
-
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _selectProduct(int index, List<Product> allProducts) async {
@@ -134,7 +138,12 @@ class _SellScreenState extends State<SellScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return Padding(
-              padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 10),
+              padding: const EdgeInsets.only(
+                top: 20,
+                left: 16,
+                right: 16,
+                bottom: 10,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -149,9 +158,14 @@ class _SellScreenState extends State<SellScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        filteredList = allProducts
-                            .where((item) => item.itemName.toLowerCase().contains(value.toLowerCase()))
-                            .toList();
+                        filteredList =
+                            allProducts
+                                .where(
+                                  (item) => item.itemName
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase()),
+                                )
+                                .toList();
                       });
                     },
                   ),
@@ -185,58 +199,6 @@ class _SellScreenState extends State<SellScreen> {
     }
   }
 
-  Widget _buildItemForm(int index, List<Product> allProducts) {
-    final item = items[index];
-    return Card(
-      color: AppColors.card,
-      margin: EdgeInsets.symmetric(vertical: 6),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () => _selectProduct(index, allProducts),
-              child: AbsorbPointer(
-                child: TextField(
-                  controller: item['product'],
-                  decoration: InputDecoration(
-                    labelText: 'Select Product',
-                    suffixIcon: Icon(Icons.arrow_drop_down),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: item['quantity'],
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Quantity'),
-                  ),
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: TextField(
-                    controller: item['price'],
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Price (₹)'),
-                  ),
-                ),
-                if (items.length > 1)
-                  IconButton(
-                    onPressed: () => _removeItem(index),
-                    icon: Icon(Icons.delete, color: AppColors.alertColor),
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   void dispose() {
@@ -270,14 +232,32 @@ class _SellScreenState extends State<SellScreen> {
                   decoration: InputDecoration(labelText: 'Customer Name'),
                 ),
                 SizedBox(height: 20),
-                Text('Items:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                ...List.generate(items.length, (index) => _buildItemForm(index, allProducts)),
+                Text(
+                  'Items:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                ...List.generate(
+                  items.length,
+                  (index) => SaleItemFormCard(
+                    index: index,
+                    items: items,
+                    allProducts: allProducts,
+                    onRemove: () => _removeItem(index),
+                    onSelectProduct: () => _selectProduct(index, allProducts),
+                  ),
+                ),
+
                 SizedBox(height: 10),
                 ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.pureWhite),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.pureWhite,
+                  ),
                   onPressed: _addNewItem,
                   icon: Icon(Icons.add, color: AppColors.summaryContainer),
-                  label: Text('Add Another Item', style: TextStyle(color: AppColors.summaryContainer)),
+                  label: Text(
+                    'Add Another Item',
+                    style: TextStyle(color: AppColors.summaryContainer),
+                  ),
                 ),
                 Divider(height: 30, thickness: 1),
                 Text(

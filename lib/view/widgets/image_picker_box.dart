@@ -22,9 +22,9 @@ class ImagePickerBox extends StatelessWidget {
               height: size.height * 0.16,
               width: size.width * 0.35,
               decoration: BoxDecoration(
-                color: const Color(0xFFF7F9FC),
+                color: AppColors.softWhiteBlue,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade300),
+                border: Border.all(color: AppColors.lightGrey300),
                 boxShadow: [
                   BoxShadow(
                     color: const Color.fromRGBO(0, 0, 0, 0.05),
@@ -64,7 +64,7 @@ class ImagePickerBox extends StatelessWidget {
                 right: 6,
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                    color: AppColors.semiTransparentBlack,
                     shape: BoxShape.circle,
                   ),
                   padding: const EdgeInsets.all(4),
