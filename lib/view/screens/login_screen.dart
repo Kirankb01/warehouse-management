@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
-import 'package:warehouse_management/models/user.dart';
 import 'package:warehouse_management/utils/helpers.dart';
-
+import 'package:warehouse_management/viewmodel/login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,13 +15,54 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
 
   bool _isPasswordObscure = true;
 
+  void _onEmailChanged(String value) {
+    final trimmed = value.replaceFirst(RegExp(r'^[ ]+'), '');
+    if (emailController.text != trimmed) {
+      emailController.text = trimmed;
+      emailController.selection = TextSelection.fromPosition(
+        TextPosition(offset: emailController.text.length),
+      );
+    }
+  }
+
+  void _onPasswordChanged(String value) {
+    final trimmed = value.replaceFirst(RegExp(r'^[ ]+'), '');
+    if (passwordController.text != trimmed) {
+      passwordController.text = trimmed;
+      passwordController.selection = TextSelection.fromPosition(
+        TextPosition(offset: passwordController.text.length),
+      );
+    }
+  }
+
+  void _submit(BuildContext context) async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final viewModel = Provider.of<LoginViewModel>(context, listen: false);
+    final success = await viewModel.login(
+      emailController.text.trim(),
+      passwordController.text.trim(),
+    );
+    if (success && mounted) {
+      Navigator.pushReplacementNamed(context, '/on_board');
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<LoginViewModel>(context);
+
     return Scaffold(
       backgroundColor: AppColors.authBackground,
       body: Padding(
@@ -42,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Image.asset('assets/login_img.png'),
                       ),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     Text(
                       'Login',
                       style: TextStyle(
@@ -51,37 +91,36 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: AppColors.pureWhite,
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     TextFormField(
                       style: TextStyle(color: AppColors.pureWhite),
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
+                      onChanged: _onEmailChanged,
                       decoration: loginInputDecoration(
                         label: 'E-mail',
                         prefixIcon: Icons.email,
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        final trimmed = value?.trim();
+                        if (trimmed == null || trimmed.isEmpty) {
                           return 'Enter email';
                         }
-
-                        // Basic email regex
                         final emailRegex = RegExp(
                           r'^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$',
                         );
-
-                        if (!emailRegex.hasMatch(value)) {
+                        if (!emailRegex.hasMatch(trimmed)) {
                           return 'Enter a valid email';
                         }
-
                         return null;
                       },
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     TextFormField(
                       style: TextStyle(color: AppColors.pureWhite),
                       controller: passwordController,
                       obscureText: _isPasswordObscure,
+                      onChanged: _onPasswordChanged,
                       decoration: loginInputDecoration(
                         label: 'Password',
                         prefixIcon: Icons.lock,
@@ -99,42 +138,44 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                       ),
-
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? 'Enter password'
-                                  : null,
+                      validator: (value) =>
+                      value == null || value.trim().isEmpty
+                          ? 'Enter password'
+                          : null,
                     ),
-                    SizedBox(height: 19),
+                    if (viewModel.errorMessage != null) ...[
+                      const SizedBox(height: 10),
+                      Text(
+                        viewModel.errorMessage!,
+                        style: const TextStyle(color: AppColors.alertColor),
+                      ),
+                    ],
+                    const SizedBox(height: 19),
                     Row(
                       children: [
                         Text(
                           "Don't have an account?",
                           style: TextStyle(color: AppColors.pureWhite),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         GestureDetector(
-                          child: Text(
+                          child: const Text(
                             'Sign Up',
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color:AppColors.primary),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              '/signup',
-                            ); // Check your actual route name
+                            Navigator.pushNamed(context, '/signup');
                           },
                         ),
                       ],
                     ),
-                    SizedBox(height: 45),
+                    const SizedBox(height: 45),
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.pureBlack,
                           foregroundColor: AppColors.pureWhite,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 69,
                             vertical: 16,
                           ),
@@ -143,42 +184,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           elevation: 5,
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            final loginEmail = emailController.text.trim();
-                            final loginPassword =
-                                passwordController.text.trim();
-
-                            final userBox = Hive.box<User>('users');
-
-                            User? matchedUser;
-                            try {
-                              matchedUser = userBox.values.firstWhere(
-                                (user) =>
-                                    user.email == loginEmail &&
-                                    user.password == loginPassword,
-                              );
-                            } catch (e) {
-                              matchedUser = null;
-                            }
-
-                            if (matchedUser != null) {
-                              final box = Hive.box('authBox');
-                              box.put('isLoggedIn', true);
-                              Navigator.pushReplacementNamed(
-                                context,
-                                '/on_board',
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Invalid email or password'),
-                                ),
-                              );
-                            }
-                          }
-                        },
-                        child: Text(
+                        onPressed: viewModel.isLoading
+                            ? null
+                            : () => _submit(context),
+                        child: viewModel.isLoading
+                            ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.pureWhite,
+                          ),
+                        )
+                            : const Text(
                           'Login',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -194,3 +212,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+

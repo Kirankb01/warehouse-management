@@ -9,10 +9,10 @@ class SummaryView extends StatelessWidget {
   final double screenHeight;
 
   const SummaryView({
-    Key? key,
+    super.key,
     required this.screenWidth,
     required this.screenHeight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

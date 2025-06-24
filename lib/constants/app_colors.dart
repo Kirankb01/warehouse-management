@@ -28,5 +28,8 @@ class AppColors {
   static const Color themeDataColor = Colors.deepPurple;
   static const Color semiTransparentBlack = Color.fromRGBO(0, 0, 0, 0.5);
   static const Color softWhiteBlue = Color(0xFFF7F9FC);
-
+  static final Color darkGreen = Colors.green.shade600;
+  static final Color darkRed = Colors.red.shade600;
+  static final Color darkBlue = Colors.blue.shade600;
+  static const Color firebrickRed = Color(0xFFB22222);
 }

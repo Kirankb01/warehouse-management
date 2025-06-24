@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:warehouse_management/models/purchase.dart';
 import 'package:warehouse_management/models/sale.dart';
-import 'package:warehouse_management/utils/helpers.dart'; // for formatDate, formatTime, buildInvoiceTable
+import 'package:warehouse_management/utils/helpers.dart';
 
 Future<void> generateAndShareInvoice(Sale sale) async {
   final pdf = pw.Document();

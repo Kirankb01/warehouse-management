@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart' show Hive;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
@@ -8,11 +7,10 @@ import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/models/purchase.dart';
 import 'package:warehouse_management/view/widgets/custom_text_field.dart';
 import 'package:warehouse_management/view/widgets/image_picker_box.dart';
+import 'package:warehouse_management/viewmodel/add_item_view_model.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/summary_view_model.dart';
-
-
 
 class AddItem extends StatefulWidget {
   const AddItem({super.key});
@@ -57,18 +55,12 @@ class _AddItemState extends State<AddItem> {
         openingStock: int.tryParse(stockController.text.trim()) ?? 0,
         reorderPoint: int.tryParse(reorderController.text.trim()) ?? 0,
         sellingPrice:
-            double.tryParse(sellingPriceController.text.trim()) ?? 0.0,
+        double.tryParse(sellingPriceController.text.trim()) ?? 0.0,
         costPrice: double.tryParse(costPriceController.text.trim()) ?? 0.0,
         imagePath: imagePath,
       );
 
-      Provider.of<ProductProvider>(
-        context,
-        listen: false,
-      ).addProduct(newProduct);
-
-      final purchaseBox = Hive.box<Purchase>('purchases');
-      final purchase = Purchase(
+      final newPurchase = Purchase(
         supplierName: supplierController.text.trim(),
         productName: nameController.text.trim(),
         quantity: int.tryParse(stockController.text.trim()) ?? 0,
@@ -76,18 +68,33 @@ class _AddItemState extends State<AddItem> {
         dateTime: DateTime.now(),
       );
 
-      await purchaseBox.add(purchase);
-      Provider.of<SummaryViewModel>(context, listen: false).loadSummaryData();
+      final saveSuccess = await AddItemViewModel().saveItemToHive(newProduct, newPurchase);
 
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Item saved and purchase recorded!'),
-          backgroundColor: AppColors.successColor,
-        ),
-      );
+      if (!mounted) return;
+
+      if (saveSuccess) {
+        Provider.of<ProductProvider>(context, listen: false).addProduct(newProduct);
+        Provider.of<SummaryViewModel>(context, listen: false).loadSummaryData();
+
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Item saved and purchase recorded!'),
+            backgroundColor: AppColors.successColor,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error saving item'),
+            backgroundColor: AppColors.alertColor,
+          ),
+        );
+      }
     }
   }
+
+
 
   Future<void> pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -128,10 +135,7 @@ class _AddItemState extends State<AddItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: ImagePickerBox(
-                    imagePath: imagePath,
-                    onTap: pickImage,
-                  ),
+                  child: ImagePickerBox(imagePath: imagePath, onTap: pickImage),
                 ),
 
                 const SizedBox(height: 24),
@@ -176,14 +180,19 @@ class _AddItemState extends State<AddItem> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 246),
-                          child: Text('Brand',style: TextStyle(fontWeight: FontWeight.bold),),
+                          child: Text(
+                            'Brand',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Theme(
                             data: Theme.of(context).copyWith(
-                              canvasColor: AppColors.content, // 👈 Dropdown background color
+                              canvasColor:
+                                  AppColors
+                                      .content, // 👈 Dropdown background color
                             ),
                             child: DropdownButtonFormField<String>(
                               value:

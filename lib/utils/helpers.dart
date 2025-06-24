@@ -8,7 +8,7 @@ export 'helpers/date_time_formatter.dart';
 export 'helpers/purchase_history_filter.dart';
 export 'helpers/sales_history_filter.dart';
 export 'helpers/invoice_table_builder.dart';
-
+export 'helpers/dashboard_line_chart_helper.dart';
 
 
 

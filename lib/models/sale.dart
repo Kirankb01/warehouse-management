@@ -16,11 +16,13 @@ class Sale extends HiveObject {
   @HiveField(3)
   final double total;
 
+
   Sale({
     required this.customerName,
     required this.items,
     required this.saleDateTime,
     required this.total,
+
   });
 }
 
@@ -34,6 +36,7 @@ class SaleItem {
 
   @HiveField(2)
   final double price;
+
 
   SaleItem({
     required this.productName,

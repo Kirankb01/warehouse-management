@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/utils/helpers/bottomSheet_helpers.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
 
@@ -189,5 +190,61 @@ void showDeleteBrandDialog(BuildContext context) {
       );
     },
   );
+}
+
+
+
+Future<bool> showConfirmSaleDialog(BuildContext context) async {
+  final result = await showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => AlertDialog(
+      backgroundColor: AppColors.pureWhite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      title: Row(
+        children: [
+          Icon(Icons.shopping_cart_checkout, color: Colors.blue),
+          SizedBox(width: 8),
+          Text("Confirm Sale"),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text("Are you sure you want to submit this sale?"),
+          SizedBox(height: 8),
+          Text(
+            "This action will finalize the transaction and cannot be undone.",
+            style: TextStyle(color: Colors.grey, fontSize: 13),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.pop(context, true),
+          icon: Icon(Icons.check),
+          label: Text("Submit"),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            textStyle: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  return result ?? false;
 }
 
