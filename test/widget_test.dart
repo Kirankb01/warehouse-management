@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:warehouse_management/app.dart';
+import 'package:warehouse_management/view/app.dart';
 
 
 void main() {

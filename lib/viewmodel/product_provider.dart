@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:warehouse_management/models/sale.dart';
 import '../models/product.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -12,6 +13,20 @@ class ProductProvider extends ChangeNotifier {
     _productBox = Hive.box<Product>('productsBox');
     loadProducts();
   }
+
+  Future<void> _reduceStockSilent(String sku, int quantity) async {
+    final product = _products.firstWhere((p) => p.sku == sku);
+    product.openingStock -= quantity;
+    await product.save();
+  }
+
+  Future<void> reduceStockForSaleItems(List<SaleItem> saleItems) async {
+    for (final saleItem in saleItems) {
+      await _reduceStockSilent(saleItem.sku!, saleItem.quantity);
+    }
+    loadProducts();
+  }
+
 
   void loadProducts() {
     _products = _productBox.values.toList();

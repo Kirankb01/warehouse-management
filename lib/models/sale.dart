@@ -37,10 +37,13 @@ class SaleItem {
   @HiveField(2)
   final double price;
 
+  @HiveField(3)
+  final String? sku;
 
   SaleItem({
     required this.productName,
     required this.quantity,
     required this.price,
+    this.sku
   });
 }

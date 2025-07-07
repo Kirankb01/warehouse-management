@@ -63,19 +63,22 @@ class SaleItemAdapter extends TypeAdapter<SaleItem> {
       productName: fields[0] as String,
       quantity: fields[1] as int,
       price: fields[2] as double,
+      sku: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SaleItem obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.productName)
       ..writeByte(1)
       ..write(obj.quantity)
       ..writeByte(2)
-      ..write(obj.price);
+      ..write(obj.price)
+      ..writeByte(3)
+      ..write(obj.sku);
   }
 
   @override

@@ -8,7 +8,6 @@ class SummaryViewModel extends ChangeNotifier {
   double? screenHeight;
 
   SummaryViewModel() {
-    // Safe async data load after object is created
     Future.microtask(() => loadSummaryData());
   }
 
@@ -25,7 +24,7 @@ class SummaryViewModel extends ChangeNotifier {
 
   void setFilter(String newFilter) {
     selectedFilter = newFilter;
-    loadSummaryData(); // Must be called to update soldQty etc.
+    loadSummaryData();
   }
 
 
@@ -54,7 +53,7 @@ class SummaryViewModel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e, stack) {
-      debugPrint('🔴 Error loading summary data: $e\n$stack');
+      debugPrint(' Error loading summary data: $e\n$stack');
     }
   }
 
@@ -74,7 +73,6 @@ class SummaryViewModel extends ChangeNotifier {
       case 'This Month':
         return date.year == now.year && date.month == now.month;
 
-      // case 'All':
       default:
         return true;
     }
