@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -10,9 +11,9 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.appBarBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.appBarBackground(context),
         title: Text('Notifications', style: AppTextStyles.appBarText),
       ),
       body: Padding(
@@ -39,7 +40,7 @@ class NotificationScreen extends StatelessWidget {
                 final product = lowStockItems[index];
 
                 return Card(
-                  color: AppColors.card,
+                  color: AppThemeHelper.cardColor(context),
                   child: ListTile(
                     leading: const Icon(
                       Icons.warning,

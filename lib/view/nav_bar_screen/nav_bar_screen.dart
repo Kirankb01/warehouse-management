@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/all_items_screen/item_screen/screen/items_screen.dart';
 import 'package:warehouse_management/view/dashboard_screen/dashboard_screen/screen/dashboard_screen.dart';
 import 'package:warehouse_management/view/sales_purchase_history_screen/screens/history_screen.dart';
 import 'package:warehouse_management/view/selling_screen/screens/selling_screen.dart';
 import 'package:warehouse_management/view/settings_screens/settings_screen/screen/settings_screen.dart';
-
-import '../constants/route_constants.dart';
-
+import '../../constants/route_constants.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -31,7 +30,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
@@ -46,7 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       bottomNavigationBar: BottomAppBar(
         elevation: 1,
         height: 60,
-        color: AppColors.pureWhite,
+        color: AppThemeHelper.dialogBackground(context),
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
         clipBehavior: Clip.antiAliasWithSaveLayer,

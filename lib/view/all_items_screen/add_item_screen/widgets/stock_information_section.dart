@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
 
 class StockInformationSection extends StatelessWidget {
@@ -16,7 +17,7 @@ class StockInformationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.card,
+      color: AppThemeHelper.cardColor(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -27,8 +28,13 @@ class StockInformationSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.store_rounded),
-                Text(' Stock Information', style: AppTextStyles.sectionHeading),
+                Icon(Icons.store_rounded, color: AppThemeHelper.iconColor(context)),
+                Text(
+                  ' Stock Information',
+                  style: AppTextStyles.sectionHeading.copyWith(
+                    color: AppThemeHelper.textColor(context),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),

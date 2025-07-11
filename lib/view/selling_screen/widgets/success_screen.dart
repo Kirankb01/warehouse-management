@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'dart:async';
-
 
 class PaymentSuccessScreen extends StatefulWidget {
   const PaymentSuccessScreen({super.key});
@@ -43,22 +43,32 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppThemeHelper.textColor(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       body: Center(
         child: ScaleTransition(
           scale: _scaleAnimation,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
-              Icon(Icons.check_circle, color: Colors.green, size: 100),
-              SizedBox(height: 20),
+            children: [
+              const Icon(Icons.check_circle, color: AppColors.successColor, size: 100),
+              const SizedBox(height: 20),
               Text(
                 "Payment Successful!",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green,
+                  color: AppColors.successColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Redirecting to Dashboard...",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: textColor.withAlpha((0.6 * 255).toInt()),
                 ),
               ),
             ],

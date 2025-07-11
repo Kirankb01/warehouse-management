@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
-
 
 class PricingInformationSectionEdit extends StatelessWidget {
   final TextEditingController sellingController;
@@ -17,31 +16,44 @@ class PricingInformationSectionEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.card,
+      color: AppThemeHelper.cardColor(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.price_change_rounded),
-                SizedBox(width: 8),
-                Text('Pricing Information', style: AppTextStyles.sectionHeading),
+                Icon(Icons.price_change_rounded, color: AppThemeHelper.iconColor(context)),
+                const SizedBox(width: 8),
+                Text(
+                  'Pricing Information',
+                  style: AppTextStyles.sectionHeading.copyWith(
+                    color: AppThemeHelper.textColor(context),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
-                  child: buildCustomTextField('Selling Price', sellingController,
-                      type: TextInputType.number, isRequired: true),
+                  child: buildCustomTextField(
+                    'Selling Price',
+                    sellingController,
+                    type: TextInputType.number,
+                    isRequired: true,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: buildCustomTextField('Cost Price', costController,
-                      type: TextInputType.number, isRequired: true),
+                  child: buildCustomTextField(
+                    'Cost Price',
+                    costController,
+                    type: TextInputType.number,
+                    isRequired: true,
+                  ),
                 ),
               ],
             ),

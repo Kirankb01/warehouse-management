@@ -50,4 +50,9 @@ class ProductProvider extends ChangeNotifier {
     loadProducts();
 
   }
+
+  Future<void> clearAll() async {
+    _products.clear();
+    notifyListeners();
+  }
 }

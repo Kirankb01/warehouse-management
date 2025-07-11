@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/settings_screens/user_manual/widgets/manual_section.dart';
 
 
@@ -85,10 +86,10 @@ class UserManualScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
         title: Text('User Manual', style: AppTextStyles.appBarText),
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.scaffoldBackground(context),
         elevation: 2,
       ),
       body: ListView.builder(
@@ -97,7 +98,7 @@ class UserManualScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final section = sections[index];
           return Card(
-            color: AppColors.pureWhite,
+            color: AppThemeHelper.cardColor(context),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             margin: const EdgeInsets.symmetric(vertical: 10),
             elevation: 3,
@@ -122,7 +123,11 @@ class UserManualScreen extends StatelessWidget {
                         const SizedBox(height: 6),
                         Text(
                           section.description,
-                          style: const TextStyle(fontSize: 15, height: 1.5, color: AppColors.pureBlack),
+                          style: TextStyle(
+                            fontSize: 15,
+                            height: 1.5,
+                            color: AppThemeHelper.textColor(context),
+                          ),
                         ),
                       ],
                     ),

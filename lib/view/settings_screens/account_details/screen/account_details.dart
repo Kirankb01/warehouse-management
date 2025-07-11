@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'dart:io';
 import 'package:warehouse_management/view/settings_screens/account_details/widgets/organization_detail_card.dart';
 import 'package:warehouse_management/viewmodel/organization_profile_view_model.dart';
@@ -26,9 +26,9 @@ class _AccountDetailsState extends State<AccountDetails> {
     return Consumer<OrganizationProfileViewModel>(
       builder: (context, viewModel, _) {
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppThemeHelper.scaffoldBackground(context),
           appBar: AppBar(
-            backgroundColor: AppColors.background,
+            backgroundColor: AppThemeHelper.scaffoldBackground(context),
             title: Text('Organization Profile', style: AppTextStyles.appBarText),
             actions: [
               Padding(
@@ -37,13 +37,13 @@ class _AccountDetailsState extends State<AccountDetails> {
                   child: const Icon(Icons.edit),
                   onTap: () async {
                     await Navigator.pushNamed(context, '/edit_account_details');
-                    viewModel.loadProfileData(); // Refresh after editing
+                    viewModel.loadProfileData();
                   },
                 ),
               ),
             ],
           ),
-          body: viewModel.orgNameController.text.isEmpty
+          body: viewModel.orgNameController.text.trim().isEmpty
               ? const Center(child: Text('No profile found'))
               : SingleChildScrollView(
             child: Padding(
@@ -61,7 +61,7 @@ class _AccountDetailsState extends State<AccountDetails> {
                           width: MediaQuery.of(context).size.width,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: AppColors.pureWhite,
+                            color: AppThemeHelper.cardColor(context),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -80,8 +80,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                           top: -30,
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundColor: AppColors.pureWhite,
-                            backgroundImage: viewModel.logoPath != null
+                            backgroundColor: AppThemeHelper.cardColor(context),
+                            backgroundImage: (viewModel.logoPath != null && File(viewModel.logoPath!).existsSync())
                                 ? FileImage(File(viewModel.logoPath!))
                                 : null,
                             child: viewModel.logoPath == null

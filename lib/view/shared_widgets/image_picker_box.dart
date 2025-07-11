@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
+
 class ImagePickerBox extends StatelessWidget {
   final String? imagePath;
   final VoidCallback onTap;
@@ -22,12 +27,12 @@ class ImagePickerBox extends StatelessWidget {
               height: size.height * 0.16,
               width: size.width * 0.35,
               decoration: BoxDecoration(
-                color: AppColors.softWhiteBlue,
+                color: AppThemeHelper.inputFieldBackground(context),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.lightGrey300),
+                border: Border.all(color: AppThemeHelper.borderColor(context)),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromRGBO(0, 0, 0, 0.05),
+                    color: Colors.black.withOpacity(0.05),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -36,13 +41,13 @@ class ImagePickerBox extends StatelessWidget {
               child: imagePath == null
                   ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.add_a_photo_rounded, size: 32, color: AppColors.onBoardScreenDot),
-                  SizedBox(height: 8),
+                children: [
+                  Icon(Icons.add_a_photo_rounded, size: 32, color: AppThemeHelper.iconColor(context)),
+                  const SizedBox(height: 8),
                   Text(
                     'Upload Image',
                     style: TextStyle(
-                      color: AppColors.onBoardScreenDot,
+                      color: AppThemeHelper.iconColor(context),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -77,3 +82,4 @@ class ImagePickerBox extends StatelessWidget {
     );
   }
 }
+

@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers/snackBar_helpers.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
 import 'package:warehouse_management/viewmodel/organization_profile_view_model.dart';
@@ -16,14 +17,14 @@ class OrganizationProfileScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.scaffoldBackground(context),
         elevation: 1,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Organization Profile',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: AppTextStyles.appBarText,
         ),
       ),
       body: SingleChildScrollView(
@@ -33,9 +34,14 @@ class OrganizationProfileScreen extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppThemeHelper.cardColor(context),
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
+              boxShadow: [
+                BoxShadow(
+                  color: AppThemeHelper.shadowColor(context),
+                  blurRadius: 6,
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +57,7 @@ class OrganizationProfileScreen extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 50,
-                              backgroundColor: Colors.grey[200],
+                              backgroundColor: AppThemeHelper.inputFieldBackground(context),
                               backgroundImage: viewModel.logoPath != null
                                   ? FileImage(File(viewModel.logoPath!))
                                   : null,
@@ -73,11 +79,11 @@ class OrganizationProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         if (viewModel.logoPath == null)
-                          const Text(
+                          Text(
                             'Add Logo',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.black,
+                              color: AppThemeHelper.textColor(context),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -92,13 +98,15 @@ class OrganizationProfileScreen extends StatelessWidget {
                     isRequired: true, type: TextInputType.emailAddress),
                 buildCustomTextField("Phone Number", viewModel.phoneController,
                     isRequired: true, type: TextInputType.phone),
-                viewModel.buildDropdown("Time Zone", viewModel.selectedTimezone, viewModel.timezones,
+                buildCustomTextField("UPI ID", viewModel.upiController,
+                    isRequired: true, type: TextInputType.emailAddress),
+                viewModel.buildDropdown(context,"Time Zone", viewModel.selectedTimezone, viewModel.timezones,
                         (val) => viewModel.setSelectedTimezone(val)),
-                viewModel.buildDropdown("Date Format", viewModel.selectedDateFormat, viewModel.dateFormats,
+                viewModel.buildDropdown(context,"Date Format", viewModel.selectedDateFormat, viewModel.dateFormats,
                         (val) => viewModel.setSelectedDateFormat(val)),
-                viewModel.buildDropdown("Country", viewModel.selectedCountry, viewModel.countries,
+                viewModel.buildDropdown(context,"Country", viewModel.selectedCountry, viewModel.countries,
                         (val) => viewModel.setSelectedCountry(val)),
-                viewModel.buildDropdown("Currency", viewModel.selectedCurrency, viewModel.currencies,
+                viewModel.buildDropdown(context,"Currency", viewModel.selectedCurrency, viewModel.currencies,
                         (val) => viewModel.setSelectedCurrency(val)),
                 const SizedBox(height: 30),
                 Center(

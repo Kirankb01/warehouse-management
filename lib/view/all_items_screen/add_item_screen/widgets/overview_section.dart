@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
 
 class OverviewSection extends StatelessWidget {
@@ -11,7 +11,7 @@ class OverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.card,
+      color: AppThemeHelper.cardColor(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 2,
       child: Padding(
@@ -20,10 +20,16 @@ class OverviewSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.store_rounded),
-                Text(' Overview', style: AppTextStyles.sectionHeading),
+                Icon(Icons.store_rounded, color: AppThemeHelper.iconColor(context)),
+                Text(
+                  ' Overview',
+                  style: AppTextStyles.sectionHeading.copyWith(
+                    color: AppThemeHelper.textColor(context),
+                  ),
+                ),
               ],
             ),
+
             const SizedBox(height: 20),
             buildCustomTextField(
               'Description',

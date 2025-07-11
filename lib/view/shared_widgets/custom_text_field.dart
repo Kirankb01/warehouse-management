@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 
-// using in product input
 
+// using product input
 Widget buildCustomTextField(
     String label,
     TextEditingController controller, {
@@ -13,41 +12,51 @@ Widget buildCustomTextField(
       TextInputType type = TextInputType.text,
       TextCapitalization capitalization = TextCapitalization.none,
     }) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 15),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 7),
-        TextFormField(
-          controller: controller,
-          textInputAction: TextInputAction.next,
-          keyboardType: multiline ? TextInputType.multiline : type,
-          minLines: multiline ? 3 : 1,
-          maxLines: multiline ? null : 1,
-          textCapitalization: capitalization,
-          onChanged: (value) {
-            final trimmed = value.replaceFirst(RegExp(r'^[ ]+'), '');
-            if (controller.text != trimmed) {
-              controller.text = trimmed;
-              controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: controller.text.length),
-              );
-            }
-          },
-          validator: isRequired
-              ? (value) {
-            if (value == null || value.trim().isEmpty) {
-              return 'Required';
-            }
-            return null;
-          }
-              : null,
-          decoration: buildInputDecoration(label),
+  return Builder(
+    builder: (context) {
+      final textColor = AppThemeHelper.textColor(context);
+
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
+            ),
+            const SizedBox(height: 7),
+            TextFormField(
+              controller: controller,
+              textInputAction: TextInputAction.next,
+              keyboardType: multiline ? TextInputType.multiline : type,
+              minLines: multiline ? 3 : 1,
+              maxLines: multiline ? null : 1,
+              textCapitalization: capitalization,
+              style: TextStyle(color: textColor),
+              onChanged: (value) {
+                final trimmed = value.replaceFirst(RegExp(r'^[ ]+'), '');
+                if (controller.text != trimmed) {
+                  controller.text = trimmed;
+                  controller.selection = TextSelection.fromPosition(
+                    TextPosition(offset: controller.text.length),
+                  );
+                }
+              },
+              validator: isRequired
+                  ? (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Required';
+                }
+                return null;
+              }
+                  : null,
+              decoration: buildInputDecoration(context, label),
+            ),
+          ],
         ),
-      ],
-    ),
+      );
+    },
   );
 }
 
@@ -57,24 +66,24 @@ Widget buildCustomTextField(
 
 
 
-InputDecoration buildInputDecoration(String labelText) {
+
+InputDecoration buildInputDecoration(BuildContext context, String labelText) {
   return InputDecoration(
     labelText: labelText,
-    labelStyle: const TextStyle(
+    labelStyle: TextStyle(
       fontSize: 14,
-      // fontWeight: FontWeight.w600,
-      color: AppColors.onBoardScreenDot,
+      color: AppThemeHelper.textColor(context).withOpacity(0.6),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     filled: true,
-    fillColor: AppColors.softBackground,
+    fillColor: AppThemeHelper.inputFieldBackground(context),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.lightBorder),
+      borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.lightBorder),
+      borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
@@ -90,6 +99,7 @@ InputDecoration buildInputDecoration(String labelText) {
     ),
   );
 }
+
 
 
 

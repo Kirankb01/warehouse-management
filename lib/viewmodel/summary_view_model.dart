@@ -57,6 +57,7 @@ class SummaryViewModel extends ChangeNotifier {
     }
   }
 
+
   bool _isInFilter(DateTime date, DateTime now) {
     switch (selectedFilter) {
       case 'Today':
@@ -77,4 +78,14 @@ class SummaryViewModel extends ChangeNotifier {
         return true;
     }
   }
+
+  void reset() {
+    soldQty = 0;
+    earnings = 0.0;
+    purchasedQty = 0;
+    spendings = 0.0;
+    selectedFilter = 'Today';
+    notifyListeners();
+  }
+
 }

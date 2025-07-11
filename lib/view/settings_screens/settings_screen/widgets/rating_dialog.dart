@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import '../../../../constants/app_colors.dart';
 
 class RatingDialog extends StatefulWidget {
@@ -16,7 +17,7 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.pureWhite,
+      backgroundColor: AppThemeHelper.dialogBackground(context),
       title: const Text('Rate StockHub'),
       content: Column(
         mainAxisSize: MainAxisSize.min,

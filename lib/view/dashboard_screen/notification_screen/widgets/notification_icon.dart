@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 
 import '../../../../constants/app_colors.dart';
 
@@ -31,7 +32,7 @@ class _NotificationIconState extends State<NotificationIcon>
       scale: widget.hasNotifications ? _controller : const AlwaysStoppedAnimation(1.0),
       child: Icon(
         widget.hasNotifications ? Icons.notifications_active : Icons.notifications,
-        color: widget.hasNotifications ? AppColors.alertColor : AppColors.pureBlack,
+        color: widget.hasNotifications ? AppColors.alertColor : AppThemeHelper.iconColor(context),
         size: 28,
       ),
     );

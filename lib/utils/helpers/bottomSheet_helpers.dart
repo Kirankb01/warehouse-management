@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
+
 
 Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async {
   final result = await showModalBottomSheet<bool>(
-    backgroundColor: AppColors.pureWhite,
+    backgroundColor: AppThemeHelper.dialogBackground(context),
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -22,16 +24,24 @@ Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async 
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
+                color: AppThemeHelper.textColor(context),
               ),
             ),
             const SizedBox(height: 10),
-            Text('Are you sure you want to delete "$itemName"?'),
+            Text(
+              'Are you sure you want to delete "$itemName"?',
+              style: TextStyle(color: AppThemeHelper.textColor(context).withOpacity(0.8)),
+            ),
             const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context, false),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppThemeHelper.textColor(context),
+                      side: BorderSide(color: AppThemeHelper.borderColor(context)),
+                    ),
                     child: const Text('Cancel'),
                   ),
                 ),
@@ -42,7 +52,10 @@ Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async 
                       backgroundColor: AppColors.alertColor,
                     ),
                     onPressed: () => Navigator.pop(context, true),
-                    child: const Text('Delete',style: TextStyle(color: AppColors.pureWhite),),
+                    child: const Text(
+                      'Delete',
+                      style: TextStyle(color: AppColors.pureWhite),
+                    ),
                   ),
                 ),
               ],
@@ -57,13 +70,6 @@ Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async 
 }
 
 
-
-
-
-
-
-
-
 void showBrandFilterDialog({
   required BuildContext context,
   required String? selectedBrand,
@@ -73,7 +79,7 @@ void showBrandFilterDialog({
   final uniqueBrands = brandProvider.brands.map((b) => b.name).toList();
 
   showModalBottomSheet(
-    backgroundColor: AppColors.pureWhite,
+    backgroundColor: AppThemeHelper.dialogBackground(context),
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -83,14 +89,21 @@ void showBrandFilterDialog({
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
           children: [
-            const Text(
+            Text(
               'Available Brands',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppThemeHelper.textColor(context),
+              ),
             ),
-            const Divider(),
+            Divider(color: AppThemeHelper.borderColor(context)),
             ...uniqueBrands.map(
                   (brand) => ListTile(
-                title: Text(brand),
+                title: Text(
+                  brand,
+                  style: TextStyle(color: AppThemeHelper.textColor(context)),
+                ),
                 selected: selectedBrand == brand,
                 onTap: () {
                   Navigator.pop(context);
@@ -99,7 +112,10 @@ void showBrandFilterDialog({
               ),
             ),
             ListTile(
-              title: const Text('Clear Brand Filter'),
+              title: Text(
+                'Clear Brand Filter',
+                style: TextStyle(color: AppThemeHelper.textColor(context)),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 onBrandSelected(null);

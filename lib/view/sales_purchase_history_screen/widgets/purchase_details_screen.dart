@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/purchase.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers.dart';
 
 class PurchaseDetailsScreen extends StatelessWidget {
@@ -12,9 +13,9 @@ class PurchaseDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.scaffoldBackground(context),
         title: Text("Purchase Invoice - ${purchase.supplierName}", style: AppTextStyles.appBarText),
       ),
       body: Padding(
@@ -33,7 +34,7 @@ class PurchaseDetailsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
-                color: AppColors.pureWhite,
+                color: AppThemeHelper.cardColor(context),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(

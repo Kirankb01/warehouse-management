@@ -4,8 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/app_settings.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 
 class OrganizationProfileViewModel extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
@@ -13,6 +13,7 @@ class OrganizationProfileViewModel extends ChangeNotifier {
   final TextEditingController orgNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController upiController = TextEditingController();
 
   String? selectedTimezone = 'GMT+5:30';
   String? selectedDateFormat = 'dd-MM-yyyy';
@@ -45,6 +46,24 @@ class OrganizationProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reset() {
+    orgNameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    upiController.clear();
+    languageController.clear();
+
+    selectedTimezone = 'GMT+5:30';
+    selectedDateFormat = 'dd-MM-yyyy';
+    selectedCountry = 'India';
+    selectedCurrency = 'INR ₹';
+    logoPath = null;
+    isDarkMode = false;
+
+    notifyListeners();
+  }
+
+
   Future<void> pickLogo() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -68,23 +87,24 @@ class OrganizationProfileViewModel extends ChangeNotifier {
 
   Future<void> loadProfileData() async {
     final box = await Hive.openBox<AppSettings>('app_settings');
-    if (box.isNotEmpty) {
-      final settings = box.getAt(0);
-      if (settings != null) {
-        orgNameController.text = settings.organizationName;
-        emailController.text = settings.email;
-        phoneController.text = settings.phone;
-        selectedCountry = settings.country;
-        selectedCurrency = settings.currency;
-        selectedTimezone = settings.timezone;
-        selectedDateFormat = settings.dateFormat;
-        logoPath = settings.logoPath;
-        languageController.text = settings.language;
-        isDarkMode = settings.isDarkMode;
-        notifyListeners();
-      }
+    final settings = box.get('settings_key');
+
+    if (settings != null) {
+      orgNameController.text = settings.organizationName;
+      emailController.text = settings.email;
+      phoneController.text = settings.phone;
+      upiController.text = settings.upiId ?? '';
+      selectedCountry = settings.country;
+      selectedCurrency = settings.currency;
+      selectedTimezone = settings.timezone;
+      selectedDateFormat = settings.dateFormat;
+      logoPath = settings.logoPath;
+      languageController.text = settings.language;
+      isDarkMode = settings.isDarkMode;
+      notifyListeners();
     }
   }
+
 
   final TextEditingController languageController = TextEditingController();
   bool isDarkMode = false;
@@ -101,6 +121,7 @@ class OrganizationProfileViewModel extends ChangeNotifier {
         organizationName: orgNameController.text.trim(),
         email: emailController.text.trim(),
         phone: phoneController.text.trim(),
+        upiId: upiController.text.trim(),
         country: selectedCountry ?? '',
         currency: selectedCurrency ?? '',
         timezone: selectedTimezone ?? '',
@@ -110,11 +131,7 @@ class OrganizationProfileViewModel extends ChangeNotifier {
         isDarkMode: isDarkMode,
       );
 
-      if (box.isNotEmpty) {
-        await box.putAt(0, settings);
-      } else {
-        await box.add(settings);
-      }
+      await box.put('settings_key', settings);
 
       return true;
     }
@@ -123,40 +140,77 @@ class OrganizationProfileViewModel extends ChangeNotifier {
 
 
 
-  Widget buildDropdown(String label, String? value, List<String> items, void Function(String?) onChanged) {
+  Widget buildDropdown(
+      BuildContext context,
+      String label,
+      String? value,
+      List<String> items,
+      void Function(String?) onChanged,
+      ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppThemeHelper.textColor(context),
+            ),
+          ),
           const SizedBox(height: 7),
           DropdownButtonFormField<String>(
             value: value,
             decoration: InputDecoration(
               filled: true,
-              fillColor: AppColors.softBackground,
+              fillColor: AppThemeHelper.inputFieldBackground(context),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.lightBorder, width: 1.5),
+                borderSide: BorderSide(
+                  color: AppThemeHelper.borderColor(context),
+                  width: 1.5,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+                borderSide: BorderSide(
+                  color: AppThemeHelper.primaryColor(context),
+                  width: 2.0,
+                ),
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.grey, width: 1.2),
+                borderSide: BorderSide(
+                  color: AppThemeHelper.borderColor(context),
+                  width: 1.2,
+                ),
               ),
             ),
-            icon: const Icon(Icons.keyboard_arrow_down_rounded),
+            icon: Icon(Icons.keyboard_arrow_down_rounded, color: AppThemeHelper.iconColor(context)),
+            dropdownColor: AppThemeHelper.cardColor(context),
+            style: TextStyle(color: AppThemeHelper.textColor(context)),
             onChanged: onChanged,
             items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           ),
         ],
       ),
     );
+  }
+
+  String generateUpiLink(BuildContext context,double amount) {
+    final upiId = upiController.text.trim();
+    final orgName = orgNameController.text.trim();
+
+    if (upiId.isEmpty || orgName.isEmpty) {
+      return '';
+    }
+
+    return "upi://pay?pa=$upiId"
+        "&pn=${Uri.encodeComponent(orgName)}"
+        "&am=${amount.toStringAsFixed(2)}"
+        "&cu=INR";
   }
 
   @override
@@ -170,5 +224,6 @@ class OrganizationProfileViewModel extends ChangeNotifier {
     emailController.dispose();
     phoneController.dispose();
     languageController.dispose();
+    upiController.dispose();
   }
 }

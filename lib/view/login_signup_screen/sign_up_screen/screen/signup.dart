@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/constants/route_constants.dart';
 import 'package:warehouse_management/utils/helpers.dart';
 import 'package:warehouse_management/viewmodel/sign_up_view_model.dart';
 
@@ -327,9 +328,7 @@ class _SignupState extends State<Signup> {
                             const Text("Already have an account?"),
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(
-                                  context,
-                                ); // This goes back to the Login screen
+                                Navigator.pushReplacementNamed(context, RouteNames.login);
                               },
                               child: const Text(
                                 'Login',

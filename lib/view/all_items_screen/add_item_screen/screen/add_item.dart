@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/models/purchase.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/all_items_screen/add_item_screen/widgets/overview_section.dart';
 import 'package:warehouse_management/view/all_items_screen/add_item_screen/widgets/pricing_information_section.dart';
 import 'package:warehouse_management/view/all_items_screen/add_item_screen/widgets/product_details_section.dart';
 import 'package:warehouse_management/view/all_items_screen/add_item_screen/widgets/stock_information_section.dart';
 import 'package:warehouse_management/view/shared_widgets/image_picker_box.dart';
 import 'package:warehouse_management/viewmodel/add_item_view_model.dart';
-import 'package:warehouse_management/viewmodel/brand_provider.dart';
-
 
 class AddItem extends StatefulWidget {
   const AddItem({super.key});
@@ -35,8 +33,9 @@ class _AddItemState extends State<AddItem> {
   final reorderController = TextEditingController();
   final sellingPriceController = TextEditingController();
   final costPriceController = TextEditingController();
-  String? imagePath;
   final descriptionController = TextEditingController();
+
+  String? imagePath;
 
   @override
   void dispose() {
@@ -83,13 +82,11 @@ class _AddItemState extends State<AddItem> {
           Navigator.pop(context);
         },
         onFailure: () {
-          // Optionally show retry or error UI
+          // Optional error handling UI
         },
       );
     }
   }
-
-
 
   Future<void> pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -107,20 +104,31 @@ class _AddItemState extends State<AddItem> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final brandProvider = Provider.of<BrandProvider>(context);
+    final backgroundColor = AppThemeHelper.scaffoldBackground(context);
+    final textColor = AppThemeHelper.textColor(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: backgroundColor,
         elevation: 1,
-        title: Text('Add Item', style: AppTextStyles.appBarText),
+        title: Text(
+          'Add Item',
+          style: AppTextStyles.appBarText.copyWith(color: textColor),
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: size.width * 0.04),
             child: TextButton(
               onPressed: _saveItem,
-              child: Text('Save', style: AppTextStyles.actionText),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: size.width < 600 ? 16 : 22,
+                ),
+              ),
             ),
           ),
         ],
@@ -136,7 +144,6 @@ class _AddItemState extends State<AddItem> {
                 Center(
                   child: ImagePickerBox(imagePath: imagePath, onTap: pickImage),
                 ),
-
                 const SizedBox(height: 32),
                 ProductDetailsSection(
                   supplierController: supplierController,
@@ -144,16 +151,13 @@ class _AddItemState extends State<AddItem> {
                   skuController: skuController,
                   brandController: brandController,
                 ),
-
                 const SizedBox(height: 10),
                 OverviewSection(descriptionController: descriptionController),
-
                 const SizedBox(height: 10),
                 StockInformationSection(
                   stockController: stockController,
                   reorderController: reorderController,
                 ),
-
                 const SizedBox(height: 10),
                 PricingInformationSection(
                   sellingPriceController: sellingPriceController,

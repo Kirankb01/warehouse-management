@@ -20,15 +20,21 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    final viewModel = Provider.of<LoginViewModel>(context, listen: false);
-    viewModel.errorMessage = null;
-    viewModel.isLoading = false;
-    viewModel.isBiometricAvailable().then((available) {
-      setState(() {
-        _biometricAvailable = available;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final viewModel = Provider.of<LoginViewModel>(context, listen: false);
+      viewModel.errorMessage = null;
+      viewModel.isLoading = false;
+
+      viewModel.isBiometricAvailable().then((available) {
+        if (mounted) {
+          setState(() {
+            _biometricAvailable = available;
+          });
+        }
       });
     });
   }
+
 
 
   void _handleLogin(BuildContext context) async {

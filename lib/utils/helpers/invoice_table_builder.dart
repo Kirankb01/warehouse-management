@@ -5,7 +5,7 @@ import '../../models/sale.dart'; // Adjust this import as needed
 
 pw.Table buildInvoiceTable(List<SaleItem> items, pw.Font customFont) {
   return pw.Table(
-    border: pw.TableBorder.all(width: 0.5), // Optional: add light border
+    border: pw.TableBorder.all(width: 0.5),
     columnWidths: {
       0: const pw.FlexColumnWidth(3),
       1: const pw.FlexColumnWidth(1),

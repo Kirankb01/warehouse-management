@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 
 
 class PrivacyPolicyPage extends StatelessWidget {
@@ -9,10 +9,10 @@ class PrivacyPolicyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
         title: Text('Privacy Policy', style: AppTextStyles.appBarText),
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.scaffoldBackground(context),
         elevation: 1,
       ),
       body: Padding(

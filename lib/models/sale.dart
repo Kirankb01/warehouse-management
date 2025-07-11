@@ -16,12 +16,20 @@ class Sale extends HiveObject {
   @HiveField(3)
   final double total;
 
+  @HiveField(4)
+  final String? customerMobile;
+
+  @HiveField(5)
+  final String? customerEmail;
+
 
   Sale({
     required this.customerName,
     required this.items,
     required this.saleDateTime,
     required this.total,
+    required this.customerMobile,
+    required this.customerEmail,
 
   });
 }

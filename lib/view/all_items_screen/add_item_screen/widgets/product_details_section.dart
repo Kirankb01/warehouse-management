@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
 import 'package:warehouse_management/viewmodel/add_item_view_model.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
@@ -31,7 +32,7 @@ class _ProductDetailsSectionState extends State<ProductDetailsSection> {
     final brandProvider = Provider.of<BrandProvider>(context);
 
     return Card(
-      color: AppColors.card,
+      color: AppThemeHelper.cardColor(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -42,8 +43,13 @@ class _ProductDetailsSectionState extends State<ProductDetailsSection> {
           children: [
             Row(
               children: [
-                const Icon(Icons.inventory_2_rounded),
-                Text(' Product Details', style: AppTextStyles.sectionHeading),
+                Icon(Icons.inventory_2_rounded, color: AppThemeHelper.iconColor(context)),
+                Text(
+                  ' Product Details',
+                  style: AppTextStyles.sectionHeading.copyWith(
+                    color: AppThemeHelper.textColor(context),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -70,7 +76,7 @@ class _ProductDetailsSectionState extends State<ProductDetailsSection> {
                 },
                 validator: (value) =>
                 value == null || value.isEmpty ? 'Please select a brand' : null,
-                decoration: buildInputDecoration('Brand').copyWith(
+                decoration: buildInputDecoration(context,'Brand').copyWith(
                   suffixIcon: const Icon(Icons.arrow_drop_down),
                 ),
               ),

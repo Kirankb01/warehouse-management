@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 
 class MonthlySalesChart extends StatelessWidget {
   final Map<String, double> monthlySales;
@@ -15,7 +15,7 @@ class MonthlySalesChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sortedEntries =
-        monthlySales.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
+    monthlySales.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
     final labels = sortedEntries.map((e) => e.key.split('-')[1]).toList();
     final values = sortedEntries.map((e) => e.value).toList();
 
@@ -25,7 +25,7 @@ class MonthlySalesChart extends StatelessWidget {
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: AppColors.pureWhite,
+      color: AppThemeHelper.dialogBackground(context),
       elevation: 3,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,16 +34,23 @@ class MonthlySalesChart extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppThemeHelper.textColor(context),
+              ),
             ),
             const SizedBox(height: 30),
             if (values.isEmpty)
-              const SizedBox(
+              SizedBox(
                 height: 220,
                 child: Center(
                   child: Text(
                     "No data to display",
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppThemeHelper.textColor(context).withOpacity(0.6),
+                    ),
                   ),
                 ),
               )
@@ -66,9 +73,9 @@ class MonthlySalesChart extends StatelessWidget {
                       maxY: maxY,
                       borderData: FlBorderData(
                         show: true,
-                        border: const Border(
-                          left: BorderSide(color: Colors.black26),
-                          bottom: BorderSide(color: Colors.black26),
+                        border: Border(
+                          left: BorderSide(color: AppThemeHelper.textColor(context).withOpacity(0.3)),
+                          bottom: BorderSide(color: AppThemeHelper.textColor(context).withOpacity(0.3)),
                           top: BorderSide.none,
                           right: BorderSide.none,
                         ),
@@ -77,11 +84,10 @@ class MonthlySalesChart extends StatelessWidget {
                         show: true,
                         drawVerticalLine: false,
                         horizontalInterval: horizontalInterval,
-                        getDrawingHorizontalLine:
-                            (val) => FlLine(
-                              color: Colors.grey.shade200,
-                              strokeWidth: 1,
-                            ),
+                        getDrawingHorizontalLine: (val) => FlLine(
+                          color: AppThemeHelper.textColor(context).withOpacity(0.1),
+                          strokeWidth: 1,
+                        ),
                       ),
                       titlesData: FlTitlesData(
                         leftTitles: AxisTitles(
@@ -89,16 +95,15 @@ class MonthlySalesChart extends StatelessWidget {
                             showTitles: true,
                             reservedSize: 40,
                             interval: horizontalInterval,
-                            getTitlesWidget:
-                                (val, _) => Text(
-                                  val >= 1000
-                                      ? '${(val / 1000).toStringAsFixed(0)}K'
-                                      : val.toStringAsFixed(0),
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.black54,
-                                  ),
-                                ),
+                            getTitlesWidget: (val, _) => Text(
+                              val >= 1000
+                                  ? '${(val / 1000).toStringAsFixed(0)}K'
+                                  : val.toStringAsFixed(0),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: AppThemeHelper.textColor(context).withOpacity(0.6),
+                              ),
+                            ),
                           ),
                         ),
                         bottomTitles: AxisTitles(
@@ -110,9 +115,10 @@ class MonthlySalesChart extends StatelessWidget {
                               if (index >= 0 && index < labels.length) {
                                 return Text(
                                   labels[index],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w500,
+                                    color: AppThemeHelper.textColor(context),
                                   ),
                                 );
                               }
@@ -131,7 +137,7 @@ class MonthlySalesChart extends StatelessWidget {
                         LineChartBarData(
                           spots: List.generate(
                             values.length,
-                            (i) => FlSpot(i.toDouble(), values[i]),
+                                (i) => FlSpot(i.toDouble(), values[i]),
                           ),
                           isCurved: true,
                           color: Colors.blueAccent,

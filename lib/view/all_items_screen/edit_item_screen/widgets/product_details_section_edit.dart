@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
-
 
 class ProductDetailsSectionEdit extends StatelessWidget {
   final TextEditingController supplierController;
@@ -27,46 +26,71 @@ class ProductDetailsSectionEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.card,
+      color: AppThemeHelper.cardColor(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.inventory_2_rounded),
-                SizedBox(width: 8),
-                Text('Product Details', style: AppTextStyles.sectionHeading),
+                Icon(Icons.inventory_2_rounded, color: AppThemeHelper.iconColor(context)),
+                const SizedBox(width: 8),
+                Text(
+                  'Product Details',
+                  style: AppTextStyles.sectionHeading.copyWith(
+                    color: AppThemeHelper.textColor(context),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
             buildCustomTextField('Supplier Name', supplierController, isRequired: true),
             buildCustomTextField('Item Name', nameController, isRequired: true),
             buildCustomTextField('SKU', skuController, isRequired: true),
-            const Padding(
-              padding: EdgeInsets.only(right: 246),
-              child: Text('Brand', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
             const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, bottom: 6),
+              child: Text(
+                'Brand',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppThemeHelper.textColor(context),
+                ),
+              ),
+            ),
             Consumer<BrandProvider>(
               builder: (context, brandProvider, _) {
                 return DropdownButtonFormField<String>(
                   value: selectedBrand,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: AppColors.inputBackground,
+                    fillColor: AppThemeHelper.inputFieldColor(context),
                     hintText: 'Select Brand',
+                    hintStyle: TextStyle(color: AppThemeHelper.hintTextColor(context)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+                      borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: AppThemeHelper.primaryColor(context), width: 1.5),
                     ),
                   ),
+                  dropdownColor: AppThemeHelper.cardColor(context),
                   items: brandProvider.brands.map((brand) {
                     return DropdownMenuItem<String>(
                       value: brand.name,
-                      child: Text(brand.name),
+                      child: Text(
+                        brand.name,
+                        style: TextStyle(color: AppThemeHelper.textColor(context)),
+                      ),
                     );
                   }).toList(),
                   onChanged: onBrandChanged,

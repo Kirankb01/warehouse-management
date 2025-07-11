@@ -22,7 +22,7 @@ class BrandProvider extends ChangeNotifier {
   }
 
   Future<void> addBrand(String name) async {
-    // Check if brand already exists (case-insensitive)
+
     bool exists = _brands.any((b) => b.name.toLowerCase() == name.toLowerCase());
 
     if (!exists) {
@@ -48,6 +48,11 @@ class BrandProvider extends ChangeNotifier {
     } catch (e) {
       print('Error deleting brand: $e');
     }
+  }
+
+  Future<void> clearAll() async {
+    _brands.clear();
+    notifyListeners();
   }
 
 }

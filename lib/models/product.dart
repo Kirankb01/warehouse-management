@@ -46,4 +46,6 @@ class Product extends HiveObject {
     this.imagePath,
     required this.description
   });
+
+
 }

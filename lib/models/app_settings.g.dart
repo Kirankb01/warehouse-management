@@ -27,13 +27,14 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
       language: fields[3] as String,
       isDarkMode: fields[4] as bool,
       logoPath: fields[9] as String?,
+      upiId: fields[10] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppSettings obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.organizationName)
       ..writeByte(1)
@@ -53,7 +54,9 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
       ..writeByte(8)
       ..write(obj.dateFormat)
       ..writeByte(9)
-      ..write(obj.logoPath);
+      ..write(obj.logoPath)
+      ..writeByte(10)
+      ..write(obj.upiId);
   }
 
   @override

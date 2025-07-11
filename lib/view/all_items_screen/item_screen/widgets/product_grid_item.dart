@@ -7,6 +7,13 @@ import 'package:warehouse_management/view/all_items_screen/item_detail_screen/sc
 
 
 
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:warehouse_management/constants/app_colors.dart';
+import 'package:warehouse_management/models/product.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
+import 'package:warehouse_management/view/all_items_screen/item_detail_screen/screen/items_details.dart';
+
 class ProductGridItem extends StatelessWidget {
   final Product product;
 
@@ -27,7 +34,7 @@ class ProductGridItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: AppColors.card,
+          color: AppThemeHelper.cardColor(context),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -46,7 +53,7 @@ class ProductGridItem extends StatelessWidget {
               height: 70,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: AppThemeHelper.scaffoldBackground(context),
                 borderRadius: BorderRadius.circular(12),
                 image: (product.imagePath != null &&
                     product.imagePath!.isNotEmpty &&
@@ -65,10 +72,10 @@ class ProductGridItem extends StatelessWidget {
                   product.itemName.isNotEmpty
                       ? product.itemName[0].toUpperCase()
                       : '?',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: AppColors.primary,
+                    color: AppThemeHelper.textColor(context),
                   ),
                 ),
               )
@@ -83,9 +90,10 @@ class ProductGridItem extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
+                color: AppThemeHelper.textColor(context),
               ),
             ),
 
@@ -98,7 +106,7 @@ class ProductGridItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 11,
-                color: Colors.grey[600],
+                color: AppThemeHelper.textColor(context).withOpacity(0.6),
               ),
             ),
 
@@ -109,15 +117,17 @@ class ProductGridItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
                 color: isLowStock
-                    ? const Color.fromRGBO(244, 67, 54, 0.1)  // 🔴 light red background
-                    : const Color.fromRGBO(76, 175, 80, 0.1), // 🟢 light green background
+                    ? const Color.fromRGBO(244, 67, 54, 0.1)
+                    : const Color.fromRGBO(76, 175, 80, 0.1),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 'Qty: ${product.openingStock}',
                 style: TextStyle(
                   fontSize: 12,
-                  color: isLowStock ? AppColors.alertColor : AppColors.successColor,
+                  color: isLowStock
+                      ? AppColors.alertColor
+                      : AppColors.successColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),

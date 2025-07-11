@@ -4,12 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers.dart';
 import 'package:warehouse_management/view/all_items_screen/edit_item_screen/screen/edit_item.dart';
 import 'package:warehouse_management/view/all_items_screen/item_detail_screen/widgets/info_row.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 import '../../../../utils/helpers/item_sales_linechart_helper.dart';
-import '../../../shared_widgets/line_chart.dart'; // import your chart
+import '../../../shared_widgets/line_chart.dart';
 
 class ItemsDetails extends StatefulWidget {
   final Product product;
@@ -29,24 +30,23 @@ class _ItemsDetailsState extends State<ItemsDetails> {
     return Consumer<ProductProvider>(
       builder: (context, provider, _) {
         final product = provider.products.firstWhere(
-          (p) => p.sku == widget.product.sku,
+              (p) => p.sku == widget.product.sku,
           orElse: () => widget.product,
         );
 
         final fileExists =
             product.imagePath != null &&
-            product.imagePath!.isNotEmpty &&
-            File(product.imagePath!).existsSync();
+                product.imagePath!.isNotEmpty &&
+                File(product.imagePath!).existsSync();
 
-        // 🎯 Fetch your sales data
         final Map<String, double> salesData = ItemSalesHelper.computeItemSales(
-          'This Month', // Adjust filter if needed
+          'This Month',
           hiveBoxName: 'salesBox',
           itemSku: product.sku,
         );
 
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppThemeHelper.scaffoldBackground(context),
           appBar: AppBar(
             title: Text(
               'Item Details',
@@ -54,14 +54,14 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                 fontSize: size.width < 600 ? 20 : 26,
               ),
             ),
-            backgroundColor: AppColors.background,
+            backgroundColor: AppThemeHelper.scaffoldBackground(context),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 15, top: 5),
                 child: Row(
                   children: [
                     GestureDetector(
-                      child: const Icon(Icons.delete),
+                      child: Icon(Icons.delete, color: AppThemeHelper.iconColor(context)),
                       onTap: () async {
                         final confirmed = await showDeleteBottomSheet(
                           context,
@@ -79,7 +79,7 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                     ),
                     SizedBox(width: size.width * 0.08),
                     GestureDetector(
-                      child: const Icon(Icons.edit),
+                      child: Icon(Icons.edit, color: AppThemeHelper.iconColor(context)),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -100,47 +100,47 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Card(
-                    color: AppColors.card,
+                    color: AppThemeHelper.cardColor(context),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(10),
-                      leading:
-                          fileExists
-                              ? ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  File(product.imagePath!),
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                              : CircleAvatar(
-                                radius: 30,
-                                backgroundColor: AppColors.addImage,
-                                child: Text(
-                                  product.itemName[0].toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.pureBlack,
-                                  ),
-                                ),
-                              ),
+                      leading: fileExists
+                          ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          File(product.imagePath!),
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                          : CircleAvatar(
+                        radius: 30,
+                        backgroundColor: AppColors.addImage,
+                        child: Text(
+                          product.itemName[0].toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppThemeHelper.textColor(context),
+                          ),
+                        ),
+                      ),
                       title: Text(
                         product.itemName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: AppThemeHelper.textColor(context),
                         ),
                       ),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 4),
                         child: Row(
                           children: [
-                            const Text("Available Stock: "),
+                            Text("Available Stock: ", style: TextStyle(color: AppThemeHelper.textColor(context))),
                             Text(
                               '${product.openingStock}',
-                              style: AppTextStyles.itemDetailText,
+                              style: AppTextStyles.itemDetailText.copyWith(color: AppThemeHelper.textColor(context)),
                             ),
                           ],
                         ),
@@ -148,11 +148,10 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                     ),
                   ),
                 ),
-                // Overview title
                 Container(
                   height: 70,
                   width: size.width,
-                  color: AppColors.pureWhite,
+                  color: AppThemeHelper.cardColor(context),
                   child: const Padding(
                     padding: EdgeInsets.only(left: 20),
                     child: Align(
@@ -173,13 +172,11 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                     children: [
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          minWidth:
-                              double
-                                  .infinity, // ✅ 40% of screen width as min width
+                          minWidth: double.infinity,
                           minHeight: screenHeight * 0.15,
                         ),
                         child: Card(
-                          color: Colors.white,
+                          color: AppThemeHelper.cardColor(context),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -187,14 +184,14 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize:
-                                  MainAxisSize.min, // ✅ allow column to grow
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Text(
+                                Text(
                                   'Description',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
+                                    color: AppThemeHelper.textColor(context),
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -202,11 +199,10 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                                   product.description?.isNotEmpty == true
                                       ? product.description!
                                       : 'No description available.',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.black87,
-                                    height:
-                                        1.3, // optional: more line height for readability
+                                    color: AppThemeHelper.textColor(context).withAlpha((0.87 * 255).toInt()),
+                                    height: 1.3,
                                   ),
                                 ),
                               ],
@@ -214,18 +210,14 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 8),
                       Card(
-                        color: AppColors.card,
+                        color: AppThemeHelper.cardColor(context),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
-                              infoRow(
-                                "Reorder Point:",
-                                '${product.reorderPoint}',
-                              ),
+                              infoRow("Reorder Point:", '${product.reorderPoint}'),
                               const SizedBox(height: 10),
                               infoRow("Brand:", product.brand),
                               const SizedBox(height: 10),
@@ -236,20 +228,14 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                       ),
                       const SizedBox(height: 8),
                       Card(
-                        color: AppColors.card,
+                        color: AppThemeHelper.cardColor(context),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
-                              infoRow(
-                                "Selling Price (INR):",
-                                '₹ ${product.sellingPrice}',
-                              ),
+                              infoRow("Selling Price (INR):", '₹ ${product.sellingPrice}'),
                               const SizedBox(height: 10),
-                              infoRow(
-                                "Cost Price (INR):",
-                                '₹ ${product.costPrice}',
-                              ),
+                              infoRow("Cost Price (INR):", '₹ ${product.costPrice}'),
                               const SizedBox(height: 16),
                             ],
                           ),

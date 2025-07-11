@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/models/purchase.dart';
 import 'package:provider/provider.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/summary_view_model.dart';
@@ -77,7 +78,7 @@ class AddItemViewModel {
     return showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.pureWhite,
+      backgroundColor: AppThemeHelper.dialogBackground(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -96,11 +97,24 @@ class AddItemViewModel {
                     children: [
                       TextField(
                         controller: searchController,
+                        style: TextStyle(color: AppThemeHelper.textColor(context)),
                         decoration: InputDecoration(
                           hintText: 'Search brand...',
-                          prefixIcon: const Icon(Icons.search),
+                          hintStyle: TextStyle(color: AppThemeHelper.textColor(context).withOpacity(0.6)),
+                          prefixIcon: Icon(Icons.search, color: AppThemeHelper.iconColor(context)),
+                          filled: true,
+                          fillColor: AppThemeHelper.inputFieldBackground(context),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: AppColors.primary, width: 1.5),
                           ),
                         ),
                         onChanged: (value) {
@@ -120,7 +134,10 @@ class AddItemViewModel {
                           itemCount: filteredBrands.length,
                           itemBuilder: (context, i) {
                             return ListTile(
-                              title: Text(filteredBrands[i]),
+                              title: Text(
+                                filteredBrands[i],
+                                style: TextStyle(color: AppThemeHelper.textColor(context)),
+                              ),
                               onTap: () => Navigator.pop(context, filteredBrands[i]),
                             );
                           },
@@ -138,8 +155,11 @@ class AddItemViewModel {
                             Navigator.pop(context, newBrand.trim());
                           }
                         },
-                        icon: const Icon(Icons.add),
-                        label: const Text('Add New Brand'),
+                        icon: Icon(Icons.add, color: AppThemeHelper.iconColor(context)),
+                        label: Text(
+                          'Add New Brand',
+                          style: TextStyle(color: AppThemeHelper.textColor(context)),
+                        ),
                       ),
                     ],
                   ),
@@ -152,6 +172,7 @@ class AddItemViewModel {
     );
   }
 
+
   // add brand dialog_box
 
   static Future<String?> showAddBrandDialog(BuildContext context) async {
@@ -161,7 +182,7 @@ class AddItemViewModel {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.pureWhite,
+          backgroundColor: AppThemeHelper.dialogBackground(context),
           title: const Text('Add New Brand'),
           content: TextField(
             controller: newBrandController,

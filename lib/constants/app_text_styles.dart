@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 
 class AppTextStyles {
   static TextStyle heading = TextStyle(
@@ -49,6 +49,7 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: Colors.black87,
   );
+
   static const label = TextStyle(color: Colors.black87, fontSize: 14);
   static const bodyText = TextStyle(fontSize: 14, color: Colors.black87);
 }

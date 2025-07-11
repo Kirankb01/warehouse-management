@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/purchase.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers.dart';
 import 'package:warehouse_management/view/sales_purchase_history_screen/widgets/purchase_details_screen.dart';
 
@@ -60,14 +61,14 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
                         hintText: 'Search supplier or product',
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.grey.shade600,
+                          color: AppThemeHelper.iconColor(context),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 14,
                         ),
                         filled: true,
-                        fillColor: AppColors.pureWhite,
+                        fillColor: AppThemeHelper.inputFieldBackground(context),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -82,15 +83,15 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: AppColors.pureWhite,
+                        color: AppThemeHelper.inputFieldBackground(context),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.lightBorder),
+                        border: Border.all(color: AppThemeHelper.borderColor(context)),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: Theme(
                           data: Theme.of(
                             context,
-                          ).copyWith(canvasColor: AppColors.pureWhite),
+                          ).copyWith(canvasColor: AppThemeHelper.dialogBackground(context)),
                           child: DropdownButton<String>(
                             value: _selectedFilter,
                             isExpanded: true,
@@ -123,7 +124,7 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
                         itemBuilder: (context, index) {
                           final purchase = filteredPurchases[index];
                           return Card(
-                            color: AppColors.card,
+                            color: AppThemeHelper.cardColor(context),
                             margin: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 6,

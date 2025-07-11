@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/all_items_screen/edit_item_screen/widgets/overview_section_edit.dart';
 import 'package:warehouse_management/view/all_items_screen/edit_item_screen/widgets/pricing_information_section_edit.dart';
 import 'package:warehouse_management/view/all_items_screen/edit_item_screen/widgets/product_details_section_edit.dart';
@@ -87,7 +88,7 @@ class _EditItemState extends State<EditItem> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
         title: Text(
           'Edit Item',
@@ -95,7 +96,7 @@ class _EditItemState extends State<EditItem> {
             fontSize: size.width < 600 ? 20 : 26,
           ),
         ),
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.scaffoldBackground(context),
         actions: [
           GestureDetector(
             onTap: () {

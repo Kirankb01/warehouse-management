@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/constants/route_constants.dart';
 import 'package:warehouse_management/models/app_settings.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers/dashboard_line_chart_helper.dart';
 import 'package:warehouse_management/view/dashboard_screen/notification_screen/widgets/notification_icon.dart';
 import 'package:warehouse_management/view/dashboard_screen/dashboard_screen/widgets/summary_view.dart';
@@ -63,12 +63,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final orgName = box.isNotEmpty ? box.getAt(0)?.organizationName ?? '' : '';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.dashBoardBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.card,
+        backgroundColor: AppThemeHelper.dashAppBarBackground(context),
         title: Text(
           'Welcome $orgName',
-          style: AppTextStyles.appBarText,
+          style: AppTextStyles.appBarText.copyWith(
+            color: AppThemeHelper.textColor(context),
+          ),
         ),
         elevation: 0,
         actions: [
@@ -77,7 +79,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Consumer<ProductProvider>(
               builder: (context, productProvider, _) {
                 final hasNotifications = productProvider.products.any(
-                  (p) => p.openingStock <= p.reorderPoint,
+                      (p) => p.openingStock <= p.reorderPoint,
                 );
 
                 return GestureDetector(
@@ -90,12 +92,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
+        decoration: BoxDecoration(
+          gradient: Theme.of(context).brightness == Brightness.dark
+              ? null
+              : LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.card, AppColors.background],
+            colors: [
+              AppThemeHelper.cardColor(context),
+              AppThemeHelper.scaffoldBackground(context),
+            ],
           ),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppThemeHelper.scaffoldBackground(context)
+              : null,
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(12.0),
@@ -106,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: AppColors.summaryContainer,
+                  color: AppThemeHelper.summaryContainer(context),
                 ),
                 child: SummaryView(
                   screenWidth: screenWidth,
@@ -122,14 +132,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Card(
-                        color: AppColors.pureWhite,
+                        color: AppThemeHelper.cardColor(context),
                         child: ListTile(
-                          leading: const Icon(Icons.card_travel),
-                          title: const Text('All Items'),
-                          subtitle: Text('$productCount items available'),
+                          leading: Icon(Icons.card_travel, color: AppThemeHelper.iconColor(context)),
+                          title: Text(
+                            'All Items',
+                            style: TextStyle(color: AppThemeHelper.textColor(context)),
+                          ),
+                          subtitle: Text(
+                            '$productCount items available',
+                            style: TextStyle(
+                              color: AppThemeHelper.textColor(context).withAlpha((0.7 * 255).toInt()),
+                            ),
+                          ),
                           trailing: Icon(
                             Icons.arrow_forward,
-                            color: AppColors.primary,
+                            color: AppThemeHelper.iconColor(context),
                             size: 16,
                           ),
                         ),
@@ -142,39 +160,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Analytics',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 19,
+                      color: AppThemeHelper.textColor(context),
+                    ),
                   ),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.filter_alt_outlined,
-                        color: AppColors.pureBlack,
+                        color: AppThemeHelper.iconColor(context),
                         size: 20,
                       ),
                       SizedBox(width: screenWidth * 0.02),
                       DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: selectedPieFilter,
-                          dropdownColor: AppColors.pureWhite,
-                          iconEnabledColor: AppColors.pureBlack,
-                          style: const TextStyle(color: AppColors.pureBlack),
+                          dropdownColor: AppThemeHelper.cardColor(context),
+                          iconEnabledColor: AppThemeHelper.iconColor(context),
+                          style: TextStyle(color: AppThemeHelper.textColor(context)),
                           onChanged: (String? newValue) {
                             setState(() {
                               selectedPieFilter = newValue!;
                             });
                             _computeMonthlySales();
                           },
-                          items:
-                              chartFilters
-                                  .map(
-                                    (String value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
+                          items: chartFilters.map((String value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          )).toList(),
                         ),
                       ),
                     ],
@@ -182,7 +199,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
               SizedBox(height: screenHeight * 0.02),
-
               MonthlySalesChart(
                 monthlySales: monthlySales,
                 title: 'Sales Analytics',

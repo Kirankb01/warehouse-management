@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 import '../../../../../constants/app_colors.dart';
 import '../../../../../constants/app_text_styles.dart';
@@ -68,10 +69,10 @@ class SummaryView extends StatelessWidget {
                         DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: summary.selectedFilter,
-                            dropdownColor: Colors.blueGrey,
+                            dropdownColor: AppThemeHelper.summaryContainer(context),
                             iconEnabledColor: AppColors.pureWhite,
-                            style: const TextStyle(
-                              color: AppColors.pureWhite,
+                            style: TextStyle(
+                              color: AppColors.pureWhite, // Updated
                               fontWeight: FontWeight.bold,
                             ),
                             onChanged: (String? newValue) {
@@ -79,17 +80,21 @@ class SummaryView extends StatelessWidget {
                                 summary.setFilter(newValue);
                               }
                             },
-                            items:
-                                ['Today', 'This Week', 'This Month'].map(
+                            items: ['Today', 'This Week', 'This Month'].map(
                                   (value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  },
-                                ).toList(),
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                      color: AppColors.pureWhite,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ).toList(),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),

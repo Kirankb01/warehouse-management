@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/view/nav_bar_screen.dart';
+import 'package:warehouse_management/view/nav_bar_screen/nav_bar_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

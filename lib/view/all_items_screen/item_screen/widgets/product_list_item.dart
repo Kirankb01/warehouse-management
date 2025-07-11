@@ -4,9 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/product.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/all_items_screen/item_detail_screen/screen/items_details.dart';
-
-
 
 class ProductListItem extends StatelessWidget {
   final Product product;
@@ -29,7 +28,7 @@ class ProductListItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
-          color: AppColors.card,
+          color: AppThemeHelper.cardColor(context),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -47,7 +46,7 @@ class ProductListItem extends StatelessWidget {
               height: 52,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.background,
+                color: AppThemeHelper.scaffoldBackground(context),
                 image: (product.imagePath != null &&
                     product.imagePath!.isNotEmpty &&
                     File(product.imagePath!).existsSync())
@@ -65,10 +64,10 @@ class ProductListItem extends StatelessWidget {
                   product.itemName.isNotEmpty
                       ? product.itemName[0].toUpperCase()
                       : '?',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
-                    color: AppColors.primary,
+                    color: AppThemeHelper.textColor(context),
                   ),
                 ),
               )
@@ -86,10 +85,10 @@ class ProductListItem extends StatelessWidget {
                     product.itemName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                      color: AppThemeHelper.textColor(context),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -97,7 +96,7 @@ class ProductListItem extends StatelessWidget {
                     "Brand: ${product.brand}",
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey[600],
+                      color: AppThemeHelper.textColor(context).withOpacity(0.6),
                     ),
                   ),
                 ],
@@ -108,11 +107,12 @@ class ProductListItem extends StatelessWidget {
             Tooltip(
               message: 'Current stock',
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: product.openingStock < product.reorderPoint
-                      ? const Color.fromRGBO(244, 67, 54, 0.1) // 🔴 Light red
-                      : const Color.fromRGBO(76, 175, 80, 0.1), // 🟢 Light green
+                      ? const Color.fromRGBO(244, 67, 54, 0.1)
+                      : const Color.fromRGBO(76, 175, 80, 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -133,4 +133,3 @@ class ProductListItem extends StatelessWidget {
     );
   }
 }
-

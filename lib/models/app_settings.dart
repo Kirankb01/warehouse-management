@@ -34,6 +34,9 @@ class AppSettings extends HiveObject {
   @HiveField(9)
   String? logoPath;
 
+  @HiveField(10)
+  String? upiId;
+
   AppSettings({
     required this.organizationName,
     required this.currency,
@@ -45,6 +48,7 @@ class AppSettings extends HiveObject {
     this.language = 'English',
     this.isDarkMode = false,
     this.logoPath,
+    required this.upiId
   });
 }
 

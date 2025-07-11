@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/shared_widgets/custom_text_field.dart';
-
 
 class OverviewSectionEdit extends StatelessWidget {
   final TextEditingController descriptionController;
@@ -12,17 +11,22 @@ class OverviewSectionEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.card,
+      color: AppThemeHelper.cardColor(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.description),
-                Text(' Overview', style: AppTextStyles.sectionHeading),
+                Icon(Icons.description, color: AppThemeHelper.iconColor(context)),
+                Text(
+                  ' Overview',
+                  style: AppTextStyles.sectionHeading.copyWith(
+                    color: AppThemeHelper.textColor(context),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),

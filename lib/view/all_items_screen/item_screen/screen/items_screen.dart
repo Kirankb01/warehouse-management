@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/models/product.dart';
+import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers.dart';
 import 'package:warehouse_management/view/all_items_screen/add_item_screen/screen/add_item.dart';
 import 'package:warehouse_management/view/all_items_screen/item_screen/widgets/product_grid_item.dart';
 import 'package:warehouse_management/view/all_items_screen/item_screen/widgets/product_list_item.dart';
-
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 
 class ItemsScreen extends StatefulWidget {
@@ -49,19 +48,19 @@ class _ItemsScreenState extends State<ItemsScreen> {
     final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppThemeHelper.scaffoldBackground(context),
         title: Text('Items', style: AppTextStyles.appBarText),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: PopupMenuButton<String>(
-              color: AppColors.pureWhite,
+              color: AppThemeHelper.cardColor(context),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              icon: const Icon(Icons.add, color: AppColors.pureBlack),
+              icon: Icon(Icons.add, color: AppThemeHelper.iconColor(context)),
               tooltip: 'Add options',
               elevation: 8,
               onSelected: (value) {
@@ -79,45 +78,44 @@ class _ItemsScreenState extends State<ItemsScreen> {
                   showDeleteBrandDialog(context);
                 }
               },
-              itemBuilder:
-                  (context) => [
-                    PopupMenuItem(
-                      value: 'item',
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.inventory_2_outlined,
-                            color: AppColors.popupMenuIconColor,
-                          ),
-                          SizedBox(width: 10),
-                          Text('Add New Item'),
-                        ],
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'item',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.inventory_2_outlined,
+                        color: AppThemeHelper.popupMenuIconColor(context),
                       ),
-                    ),
-                    PopupMenuItem(
-                      value: 'brand',
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.branding_watermark,
-                            color: AppColors.popupMenuIconColor,
-                          ),
-                          SizedBox(width: 10),
-                          Text('Add New Brand'),
-                        ],
+                      const SizedBox(width: 10),
+                      Text('Add New Item'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'brand',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.branding_watermark,
+                        color: AppThemeHelper.popupMenuIconColor(context),
                       ),
-                    ),
-                    PopupMenuItem(
-                      value: 'delete_brand',
-                      child: Row(
-                        children: const [
-                          Icon(Icons.delete_forever),
-                          SizedBox(width: 10),
-                          Text('Delete Brand'),
-                        ],
-                      ),
-                    ),
-                  ],
+                      const SizedBox(width: 10),
+                      Text('Add New Brand'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete_brand',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete_forever, color: AppThemeHelper.iconColor(context)),
+                      const SizedBox(width: 10),
+                      Text('Delete Brand'),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -132,15 +130,16 @@ class _ItemsScreenState extends State<ItemsScreen> {
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Search Item Name, SKU',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: Icon(Icons.search, color: AppThemeHelper.iconColor(context)),
                       filled: true,
-                      fillColor: AppColors.pureWhite,
+                      fillColor: AppThemeHelper.inputFieldBackground(context),
                       contentPadding: const EdgeInsets.symmetric(vertical: 0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
                         borderSide: BorderSide.none,
                       ),
                     ),
+                    style: TextStyle(color: AppThemeHelper.textColor(context)),
                     onChanged: (value) {
                       setState(() {
                         searchQuery = value.toLowerCase();
@@ -168,7 +167,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
                             },
                           );
                         },
-                        child: const Icon(Icons.filter_alt_outlined),
+                        child: Icon(Icons.filter_alt_outlined, color: AppThemeHelper.iconColor(context)),
                       ),
                       const SizedBox(width: 15),
                       GestureDetector(
@@ -181,6 +180,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
                           padding: const EdgeInsets.only(right: 8),
                           child: Icon(
                             isGridView ? Icons.list : Icons.grid_view,
+                            color: AppThemeHelper.iconColor(context),
                           ),
                         ),
                       ),
@@ -191,32 +191,35 @@ class _ItemsScreenState extends State<ItemsScreen> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child:
-                  _filteredProducts.isEmpty
-                      ? const Center(child: Text('No items found'))
-                      : isGridView
-                      ? GridView.builder(
-                        itemCount: _filteredProducts.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 12,
-                              mainAxisSpacing: 12,
-                              childAspectRatio: 3 / 3.5, // taller item
-                            ),
-                        itemBuilder: (context, index) {
-                          return ProductGridItem(
-                            product: _filteredProducts[index],
-                          );
-                        },
-                      )
-                      : ListView.builder(
-                        itemCount: _filteredProducts.length,
-                        itemBuilder: (context, index) {
-                          final product = _filteredProducts[index];
-                          return ProductListItem(product: product);
-                        },
-                      ),
+              child: _filteredProducts.isEmpty
+                  ? Center(
+                child: Text(
+                  'No items found',
+                  style: TextStyle(color: AppThemeHelper.textColor(context)),
+                ),
+              )
+                  : isGridView
+                  ? GridView.builder(
+                itemCount: _filteredProducts.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 3 / 3.5,
+                ),
+                itemBuilder: (context, index) {
+                  return ProductGridItem(
+                    product: _filteredProducts[index],
+                  );
+                },
+              )
+                  : ListView.builder(
+                itemCount: _filteredProducts.length,
+                itemBuilder: (context, index) {
+                  final product = _filteredProducts[index];
+                  return ProductListItem(product: product);
+                },
+              ),
             ),
           ],
         ),
