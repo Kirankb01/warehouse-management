@@ -16,19 +16,28 @@ class SaleDetailsScreen extends StatelessWidget {
       backgroundColor: AppThemeHelper.scaffoldBackground(context),
       appBar: AppBar(
         backgroundColor: AppThemeHelper.scaffoldBackground(context),
-        title: Text("Sale Invoice - ${sale.customerName}", style: AppTextStyles.appBarText),
+        title: Text(
+          "Sale Invoice - ${sale.customerName}",
+          style: AppTextStyles.appBarText,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Customer: ${sale.customerName}", style: TextStyle(fontSize: 18)),
+            Text(
+              "Customer: ${sale.customerName}",
+              style: TextStyle(fontSize: 18),
+            ),
             SizedBox(height: 6),
             Text("Date: ${formatDate(sale.saleDateTime)}"),
             Text("Time: ${formatTime(sale.saleDateTime)}"),
             Divider(height: 30, thickness: 1),
-            Text("Items Purchased:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              "Items Purchased:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 12),
 
             Container(
@@ -47,25 +56,59 @@ class SaleDetailsScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          Expanded(flex: 3, child: Text("Product", style: TextStyle(fontWeight: FontWeight.bold))),
-                          Expanded(flex: 1, child: Text("Qty", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold))),
-                          Expanded(flex: 2, child: Text("Price", textAlign: TextAlign.right, style: TextStyle(fontWeight: FontWeight.bold))),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              "Product",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Qty",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              "Price",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     const Divider(),
 
-                    ...sale.items.map((item) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(flex: 3, child: Text(item.productName)),
-                          Expanded(flex: 1, child: Text('${item.quantity}', textAlign: TextAlign.center)),
-                          Expanded(flex: 2, child: Text('₹${item.price.toStringAsFixed(2)}', textAlign: TextAlign.right)),
-                        ],
+                    ...sale.items.map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(flex: 3, child: Text(item.productName)),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                '${item.quantity}',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                '₹${item.price.toStringAsFixed(2)}',
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -76,8 +119,14 @@ class SaleDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Total', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Text('₹${sale.total.toStringAsFixed(2)}', style: TextStyle(fontSize: 18)),
+                Text(
+                  'Total',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '₹${sale.total.toStringAsFixed(2)}',
+                  style: TextStyle(fontSize: 18),
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -87,8 +136,13 @@ class SaleDetailsScreen extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () => generateAndShareInvoice(sale),
                   icon: Icon(Icons.share, color: AppColors.pureWhite),
-                  label: Text("Share PDF", style: TextStyle(color: AppColors.pureWhite)),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.successColor),
+                  label: Text(
+                    "Share PDF",
+                    style: TextStyle(color: AppColors.pureWhite),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.successColor,
+                  ),
                 ),
               ],
             ),

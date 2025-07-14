@@ -42,7 +42,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const BottomNavBar()), // or DashboardScreen()
+        MaterialPageRoute(
+          builder: (_) => const BottomNavBar(),
+        ), // or DashboardScreen()
       );
     }
   }
@@ -160,7 +162,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (_) => const BottomNavBar()), // or DashboardScreen()
+                            MaterialPageRoute(
+                              builder: (_) => const BottomNavBar(),
+                            ), // or DashboardScreen()
                           );
                         },
                         child: const Text(

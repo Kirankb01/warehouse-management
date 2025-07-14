@@ -9,9 +9,7 @@ import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 
-
 class AddItemViewModel {
-
   static Future<void> saveItem({
     required BuildContext context,
     required Product product,
@@ -21,12 +19,18 @@ class AddItemViewModel {
   }) async {
     try {
       // save to Hive
-      final success = await AddItemViewModel().saveItemToHive(product, purchase);
+      final success = await AddItemViewModel().saveItemToHive(
+        product,
+        purchase,
+      );
 
       if (!context.mounted) return;
 
       if (success) {
-        Provider.of<ProductProvider>(context, listen: false).addProduct(product);
+        Provider.of<ProductProvider>(
+          context,
+          listen: false,
+        ).addProduct(product);
         Provider.of<SummaryViewModel>(context, listen: false).loadSummaryData();
         onSuccess();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +59,6 @@ class AddItemViewModel {
     }
   }
 
-
   Future<bool> saveItemToHive(Product newProduct, Purchase newPurchase) async {
     try {
       final purchaseBox = Hive.box<Purchase>('purchases');
@@ -67,13 +70,14 @@ class AddItemViewModel {
     }
   }
 
-
   // brand selecting logic in add_item
 
   static Future<String?> showBrandBottomSheet(BuildContext context) async {
     final brandProvider = Provider.of<BrandProvider>(context, listen: false);
     final searchController = TextEditingController();
-    List<String> filteredBrands = List.from(brandProvider.brands.map((b) => b.name));
+    List<String> filteredBrands = List.from(
+      brandProvider.brands.map((b) => b.name),
+    );
 
     return showModalBottomSheet<String>(
       context: context,
@@ -97,32 +101,55 @@ class AddItemViewModel {
                     children: [
                       TextField(
                         controller: searchController,
-                        style: TextStyle(color: AppThemeHelper.textColor(context)),
+                        style: TextStyle(
+                          color: AppThemeHelper.textColor(context),
+                        ),
                         decoration: InputDecoration(
                           hintText: 'Search brand...',
-                          hintStyle: TextStyle(color: AppThemeHelper.textColor(context).withOpacity(0.6)),
-                          prefixIcon: Icon(Icons.search, color: AppThemeHelper.iconColor(context)),
+                          hintStyle: TextStyle(
+                            color: AppThemeHelper.textColor(
+                              context,
+                            ).withAlpha((0.6 * 255).toInt()),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: AppThemeHelper.iconColor(context),
+                          ),
                           filled: true,
-                          fillColor: AppThemeHelper.inputFieldBackground(context),
+                          fillColor: AppThemeHelper.inputFieldBackground(
+                            context,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
+                            borderSide: BorderSide(
+                              color: AppThemeHelper.borderColor(context),
+                            ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppThemeHelper.borderColor(context)),
+                            borderSide: BorderSide(
+                              color: AppThemeHelper.borderColor(context),
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+                            borderSide: BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
+                            ),
                           ),
                         ),
                         onChanged: (value) {
                           setModalState(() {
-                            filteredBrands = brandProvider.brands
-                                .where((b) => b.name.toLowerCase().contains(value.toLowerCase()))
-                                .map((b) => b.name)
-                                .toList();
+                            filteredBrands =
+                                brandProvider.brands
+                                    .where(
+                                      (b) => b.name.toLowerCase().contains(
+                                        value.toLowerCase(),
+                                      ),
+                                    )
+                                    .map((b) => b.name)
+                                    .toList();
                           });
                         },
                       ),
@@ -136,9 +163,13 @@ class AddItemViewModel {
                             return ListTile(
                               title: Text(
                                 filteredBrands[i],
-                                style: TextStyle(color: AppThemeHelper.textColor(context)),
+                                style: TextStyle(
+                                  color: AppThemeHelper.textColor(context),
+                                ),
                               ),
-                              onTap: () => Navigator.pop(context, filteredBrands[i]),
+                              onTap:
+                                  () =>
+                                      Navigator.pop(context, filteredBrands[i]),
                             );
                           },
                         ),
@@ -150,15 +181,23 @@ class AddItemViewModel {
                           if (newBrand != null && newBrand.trim().isNotEmpty) {
                             brandProvider.addBrand(newBrand.trim());
                             setModalState(() {
-                              filteredBrands = brandProvider.brands.map((b) => b.name).toList();
+                              filteredBrands =
+                                  brandProvider.brands
+                                      .map((b) => b.name)
+                                      .toList();
                             });
                             Navigator.pop(context, newBrand.trim());
                           }
                         },
-                        icon: Icon(Icons.add, color: AppThemeHelper.iconColor(context)),
+                        icon: Icon(
+                          Icons.add,
+                          color: AppThemeHelper.iconColor(context),
+                        ),
                         label: Text(
                           'Add New Brand',
-                          style: TextStyle(color: AppThemeHelper.textColor(context)),
+                          style: TextStyle(
+                            color: AppThemeHelper.textColor(context),
+                          ),
                         ),
                       ),
                     ],
@@ -171,7 +210,6 @@ class AddItemViewModel {
       },
     );
   }
-
 
   // add brand dialog_box
 
@@ -204,4 +242,3 @@ class AddItemViewModel {
     );
   }
 }
-

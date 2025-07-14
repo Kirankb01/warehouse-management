@@ -20,7 +20,10 @@ class OverviewSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.store_rounded, color: AppThemeHelper.iconColor(context)),
+                Icon(
+                  Icons.store_rounded,
+                  color: AppThemeHelper.iconColor(context),
+                ),
                 Text(
                   ' Overview',
                   style: AppTextStyles.sectionHeading.copyWith(

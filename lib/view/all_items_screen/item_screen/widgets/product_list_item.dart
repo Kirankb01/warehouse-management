@@ -1,11 +1,8 @@
-// product_list_item.dart
-
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/all_items_screen/item_detail_screen/screen/items_details.dart';
+import 'package:warehouse_management/view/all_items_screen/item_screen/widgets/product_image_box.dart';
 
 class ProductListItem extends StatelessWidget {
   final Product product;
@@ -40,43 +37,17 @@ class ProductListItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Product Image or Initial
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppThemeHelper.scaffoldBackground(context),
-                image: (product.imagePath != null &&
-                    product.imagePath!.isNotEmpty &&
-                    File(product.imagePath!).existsSync())
-                    ? DecorationImage(
-                  image: FileImage(File(product.imagePath!)),
-                  fit: BoxFit.cover,
-                )
-                    : null,
-              ),
-              child: (product.imagePath == null ||
-                  product.imagePath!.isEmpty ||
-                  !File(product.imagePath!).existsSync())
-                  ? Center(
-                child: Text(
-                  product.itemName.isNotEmpty
-                      ? product.itemName[0].toUpperCase()
-                      : '?',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: AppThemeHelper.textColor(context),
-                  ),
-                ),
-              )
-                  : null,
+            ProductImageBox(
+              itemName: product.itemName,
+              imagePath: product.imagePath,
+              imageBytes: product.imageBytes,
+              size: 52,
+              isCircle: true,
+              isGridView: false,
             ),
 
             const SizedBox(width: 16),
 
-            // Item Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,14 +67,13 @@ class ProductListItem extends StatelessWidget {
                     "Brand: ${product.brand}",
                     style: TextStyle(
                       fontSize: 13,
-                      color: AppThemeHelper.textColor(context).withOpacity(0.6),
+                      color: AppThemeHelper.textColor(context).withAlpha(153),
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Stock Badge with Tooltip
             Tooltip(
               message: 'Current stock',
               child: Container(

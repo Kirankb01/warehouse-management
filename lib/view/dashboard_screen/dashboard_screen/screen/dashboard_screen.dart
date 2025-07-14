@@ -49,8 +49,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() {
       monthlySales = tempMonthly;
     });
-
-    print('Monthly sales map: $tempMonthly');
   }
 
   @override
@@ -79,11 +77,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Consumer<ProductProvider>(
               builder: (context, productProvider, _) {
                 final hasNotifications = productProvider.products.any(
-                      (p) => p.openingStock <= p.reorderPoint,
+                  (p) => p.openingStock <= p.reorderPoint,
                 );
 
                 return GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, RouteNames.notification),
+                  onTap:
+                      () =>
+                          Navigator.pushNamed(context, RouteNames.notification),
                   child: NotificationIcon(hasNotifications: hasNotifications),
                 );
               },
@@ -93,19 +93,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: Theme.of(context).brightness == Brightness.dark
-              ? null
-              : LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppThemeHelper.cardColor(context),
-              AppThemeHelper.scaffoldBackground(context),
-            ],
-          ),
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppThemeHelper.scaffoldBackground(context)
-              : null,
+          gradient:
+              Theme.of(context).brightness == Brightness.dark
+                  ? null
+                  : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppThemeHelper.cardColor(context),
+                      AppThemeHelper.scaffoldBackground(context),
+                    ],
+                  ),
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? AppThemeHelper.scaffoldBackground(context)
+                  : null,
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(12.0),
@@ -134,15 +136,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Card(
                         color: AppThemeHelper.cardColor(context),
                         child: ListTile(
-                          leading: Icon(Icons.card_travel, color: AppThemeHelper.iconColor(context)),
+                          leading: Icon(
+                            Icons.card_travel,
+                            color: AppThemeHelper.iconColor(context),
+                          ),
                           title: Text(
                             'All Items',
-                            style: TextStyle(color: AppThemeHelper.textColor(context)),
+                            style: TextStyle(
+                              color: AppThemeHelper.textColor(context),
+                            ),
                           ),
                           subtitle: Text(
                             '$productCount items available',
                             style: TextStyle(
-                              color: AppThemeHelper.textColor(context).withAlpha((0.7 * 255).toInt()),
+                              color: AppThemeHelper.textColor(
+                                context,
+                              ).withAlpha((0.7 * 255).toInt()),
                             ),
                           ),
                           trailing: Icon(
@@ -181,17 +190,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           value: selectedPieFilter,
                           dropdownColor: AppThemeHelper.cardColor(context),
                           iconEnabledColor: AppThemeHelper.iconColor(context),
-                          style: TextStyle(color: AppThemeHelper.textColor(context)),
+                          style: TextStyle(
+                            color: AppThemeHelper.textColor(context),
+                          ),
                           onChanged: (String? newValue) {
                             setState(() {
                               selectedPieFilter = newValue!;
                             });
                             _computeMonthlySales();
                           },
-                          items: chartFilters.map((String value) => DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          )).toList(),
+                          items:
+                              chartFilters
+                                  .map(
+                                    (String value) => DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    ),
+                                  )
+                                  .toList(),
                         ),
                       ),
                     ],

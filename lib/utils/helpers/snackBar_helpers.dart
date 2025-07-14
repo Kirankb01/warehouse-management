@@ -62,23 +62,3 @@ void showSnackBar(BuildContext context,String message,{Color? backgroundColor}) 
 }
 
 
-
-
-// void authSnackBar(BuildContext context, String message, {Color? backgroundColor}) {
-//   ScaffoldMessenger.of(context).showSnackBar(
-//     SnackBar(
-//       content: Text(
-//         message,
-//         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-//       ),
-//       behavior: SnackBarBehavior.floating,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       backgroundColor: backgroundColor ?? const Color(0xFF88C0D0),
-//       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-//       duration: const Duration(seconds: 3),
-//     ),
-//   );
-// }
-

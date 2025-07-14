@@ -6,7 +6,6 @@ import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers.dart';
 import 'package:warehouse_management/view/sales_purchase_history_screen/widgets/purchase_details_screen.dart';
 
-
 class PurchaseHistoryTab extends StatefulWidget {
   const PurchaseHistoryTab({super.key});
 
@@ -26,9 +25,7 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
       valueListenable: Hive.box<Purchase>('purchases').listenable(),
       builder: (context, box, _) {
         final allPurchases = box.values.toList().cast<Purchase>();
-        allPurchases.sort(
-          (a, b) => b.dateTime.compareTo(a.dateTime),
-        );
+        allPurchases.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
         final filteredPurchases =
             allPurchases.where((purchase) {
@@ -49,7 +46,6 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
 
         return Column(
           children: [
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -85,13 +81,17 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
                       decoration: BoxDecoration(
                         color: AppThemeHelper.inputFieldBackground(context),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppThemeHelper.borderColor(context)),
+                        border: Border.all(
+                          color: AppThemeHelper.borderColor(context),
+                        ),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: Theme(
-                          data: Theme.of(
-                            context,
-                          ).copyWith(canvasColor: AppThemeHelper.dialogBackground(context)),
+                          data: Theme.of(context).copyWith(
+                            canvasColor: AppThemeHelper.dialogBackground(
+                              context,
+                            ),
+                          ),
                           child: DropdownButton<String>(
                             value: _selectedFilter,
                             isExpanded: true,
@@ -188,8 +188,10 @@ class _PurchaseHistoryTabState extends State<PurchaseHistoryTab> {
                                               );
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: AppColors.primary,
-                                              foregroundColor: AppColors.pureWhite,
+                                              backgroundColor:
+                                                  AppColors.primary,
+                                              foregroundColor:
+                                                  AppColors.pureWhite,
                                             ),
                                             icon: const Icon(Icons.download),
                                             label: const Text(

@@ -21,13 +21,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
           backgroundColor: AppThemeHelper.scaffoldBackground(context),
           title: Text(
             'History',
-            style: TextStyle(color: AppThemeHelper.textColor(context), fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: AppThemeHelper.textColor(context),
+              fontWeight: FontWeight.bold,
+            ),
           ),
 
           bottom: TabBar(
             indicatorColor: AppThemeHelper.textColor(context),
             labelColor: AppThemeHelper.textColor(context),
-            unselectedLabelColor: AppThemeHelper.textColor(context).withAlpha(127),
+            unselectedLabelColor: AppThemeHelper.textColor(
+              context,
+            ).withAlpha(127),
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
             indicator: UnderlineTabIndicator(
               insets: EdgeInsets.symmetric(horizontal: 110),

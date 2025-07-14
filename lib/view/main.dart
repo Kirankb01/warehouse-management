@@ -9,7 +9,7 @@ import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/sales_provider.dart';
 import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 import 'package:warehouse_management/viewmodel/theme_provider.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,12 @@ void main() async {
           create: (_) => ThemeProvider()..loadThemeFromHive(),
         ),
       ],
-      child: MyApp(),
+      child: ScreenUtilInit(
+        designSize: Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => const MyApp(),
+      ),
     ),
   );
 }

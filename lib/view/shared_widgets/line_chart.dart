@@ -15,7 +15,7 @@ class MonthlySalesChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sortedEntries =
-    monthlySales.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
+        monthlySales.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
     final labels = sortedEntries.map((e) => e.key.split('-')[1]).toList();
     final values = sortedEntries.map((e) => e.value).toList();
 
@@ -49,7 +49,7 @@ class MonthlySalesChart extends StatelessWidget {
                     "No data to display",
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppThemeHelper.textColor(context).withOpacity(0.6),
+                      color: AppThemeHelper.textColor(context).withAlpha(153),
                     ),
                   ),
                 ),
@@ -74,8 +74,16 @@ class MonthlySalesChart extends StatelessWidget {
                       borderData: FlBorderData(
                         show: true,
                         border: Border(
-                          left: BorderSide(color: AppThemeHelper.textColor(context).withOpacity(0.3)),
-                          bottom: BorderSide(color: AppThemeHelper.textColor(context).withOpacity(0.3)),
+                          left: BorderSide(
+                            color: AppThemeHelper.textColor(
+                              context,
+                            ).withAlpha(77),
+                          ),
+                          bottom: BorderSide(
+                            color: AppThemeHelper.textColor(
+                              context,
+                            ).withAlpha(77),
+                          ),
                           top: BorderSide.none,
                           right: BorderSide.none,
                         ),
@@ -84,10 +92,13 @@ class MonthlySalesChart extends StatelessWidget {
                         show: true,
                         drawVerticalLine: false,
                         horizontalInterval: horizontalInterval,
-                        getDrawingHorizontalLine: (val) => FlLine(
-                          color: AppThemeHelper.textColor(context).withOpacity(0.1),
-                          strokeWidth: 1,
-                        ),
+                        getDrawingHorizontalLine:
+                            (val) => FlLine(
+                              color: AppThemeHelper.textColor(
+                                context,
+                              ).withAlpha(25),
+                              strokeWidth: 1,
+                            ),
                       ),
                       titlesData: FlTitlesData(
                         leftTitles: AxisTitles(
@@ -95,15 +106,18 @@ class MonthlySalesChart extends StatelessWidget {
                             showTitles: true,
                             reservedSize: 40,
                             interval: horizontalInterval,
-                            getTitlesWidget: (val, _) => Text(
-                              val >= 1000
-                                  ? '${(val / 1000).toStringAsFixed(0)}K'
-                                  : val.toStringAsFixed(0),
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppThemeHelper.textColor(context).withOpacity(0.6),
-                              ),
-                            ),
+                            getTitlesWidget:
+                                (val, _) => Text(
+                                  val >= 1000
+                                      ? '${(val / 1000).toStringAsFixed(0)}K'
+                                      : val.toStringAsFixed(0),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: AppThemeHelper.textColor(
+                                      context,
+                                    ).withAlpha(153),
+                                  ),
+                                ),
                           ),
                         ),
                         bottomTitles: AxisTitles(
@@ -137,7 +151,7 @@ class MonthlySalesChart extends StatelessWidget {
                         LineChartBarData(
                           spots: List.generate(
                             values.length,
-                                (i) => FlSpot(i.toDouble(), values[i]),
+                            (i) => FlSpot(i.toDouble(), values[i]),
                           ),
                           isCurved: true,
                           color: Colors.blueAccent,

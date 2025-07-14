@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
@@ -12,9 +13,6 @@ import 'package:warehouse_management/view/all_items_screen/edit_item_screen/widg
 import 'package:warehouse_management/view/all_items_screen/edit_item_screen/widgets/stock_information_section_edit.dart';
 import 'package:warehouse_management/view/shared_widgets/image_picker_box.dart';
 import 'package:warehouse_management/viewmodel/edit_item_view_model.dart';
-
-
-
 
 class EditItem extends StatefulWidget {
   final Product product;
@@ -37,6 +35,7 @@ class _EditItemState extends State<EditItem> {
   late TextEditingController costController;
   late TextEditingController descriptionController;
 
+  Uint8List? _imageBytes;
 
   String? _imagePath;
   String? selectedBrand;
@@ -44,15 +43,28 @@ class _EditItemState extends State<EditItem> {
   @override
   void initState() {
     super.initState();
-    supplierController = TextEditingController(text: widget.product.supplierName);
+    supplierController = TextEditingController(
+      text: widget.product.supplierName,
+    );
     nameController = TextEditingController(text: widget.product.itemName);
     skuController = TextEditingController(text: widget.product.sku);
-    descriptionController=TextEditingController(text: widget.product.description);
-    stockController = TextEditingController(text: widget.product.openingStock.toString());
-    reorderController = TextEditingController(text: widget.product.reorderPoint.toString());
-    sellingController = TextEditingController(text: widget.product.sellingPrice.toString());
-    costController = TextEditingController(text: widget.product.costPrice.toString());
+    descriptionController = TextEditingController(
+      text: widget.product.description,
+    );
+    stockController = TextEditingController(
+      text: widget.product.openingStock.toString(),
+    );
+    reorderController = TextEditingController(
+      text: widget.product.reorderPoint.toString(),
+    );
+    sellingController = TextEditingController(
+      text: widget.product.sellingPrice.toString(),
+    );
+    costController = TextEditingController(
+      text: widget.product.costPrice.toString(),
+    );
     _imagePath = widget.product.imagePath;
+    _imageBytes = widget.product.imageBytes;
     selectedBrand = widget.product.brand;
   }
 
@@ -70,18 +82,28 @@ class _EditItemState extends State<EditItem> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile == null) return;
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    final appDir = await getApplicationDocumentsDirectory();
-    final fileName = pickedFile.name;
-    final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
-
-    setState(() {
-      _imagePath = savedImage.path;
-    });
+    if (result != null) {
+      if (kIsWeb) {
+        setState(() {
+          _imageBytes = result.files.single.bytes!;
+          _imagePath = null;
+        });
+      } else {
+        final path = result.files.single.path;
+        if (path != null) {
+          final savedImage = await File(path).copy(
+            '${(await getApplicationDocumentsDirectory()).path}/${result.files.single.name}',
+          );
+          setState(() {
+            _imagePath = savedImage.path;
+            _imageBytes = null;
+          });
+        }
+      }
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +136,7 @@ class _EditItemState extends State<EditItem> {
                 descriptionController: descriptionController,
                 selectedBrand: selectedBrand,
                 imagePath: _imagePath,
+                // imageBytes: _imageBytes,
               );
             },
 
@@ -143,6 +166,7 @@ class _EditItemState extends State<EditItem> {
                 Center(
                   child: ImagePickerBox(
                     imagePath: _imagePath,
+                    imageBytes: _imageBytes,
                     onTap: _pickImage,
                   ),
                 ),
@@ -153,10 +177,13 @@ class _EditItemState extends State<EditItem> {
                   skuController: skuController,
                   brandController: TextEditingController(text: selectedBrand),
                   selectedBrand: selectedBrand,
-                  onBrandChanged: (value) => setState(() => selectedBrand = value),
+                  onBrandChanged:
+                      (value) => setState(() => selectedBrand = value),
                 ),
                 const SizedBox(height: 15),
-                OverviewSectionEdit(descriptionController: descriptionController),
+                OverviewSectionEdit(
+                  descriptionController: descriptionController,
+                ),
                 const SizedBox(height: 15),
                 StockInformationSectionEdit(
                   stockController: stockController,

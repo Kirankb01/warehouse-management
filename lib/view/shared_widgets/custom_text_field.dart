@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
 
-
 // using product input
 Widget buildCustomTextField(
-    String label,
-    TextEditingController controller, {
-      bool isRequired = false,
-      bool multiline = false,
-      TextInputType type = TextInputType.text,
-      TextCapitalization capitalization = TextCapitalization.none,
-    }) {
+  String label,
+  TextEditingController controller, {
+  bool isRequired = false,
+  bool multiline = false,
+  TextInputType type = TextInputType.text,
+  TextCapitalization capitalization = TextCapitalization.none,
+}) {
   return Builder(
     builder: (context) {
       final textColor = AppThemeHelper.textColor(context);
@@ -43,14 +42,15 @@ Widget buildCustomTextField(
                   );
                 }
               },
-              validator: isRequired
-                  ? (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Required';
-                }
-                return null;
-              }
-                  : null,
+              validator:
+                  isRequired
+                      ? (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Required';
+                        }
+                        return null;
+                      }
+                      : null,
               decoration: buildInputDecoration(context, label),
             ),
           ],
@@ -60,19 +60,12 @@ Widget buildCustomTextField(
   );
 }
 
-
-
-
-
-
-
-
 InputDecoration buildInputDecoration(BuildContext context, String labelText) {
   return InputDecoration(
     labelText: labelText,
     labelStyle: TextStyle(
       fontSize: 14,
-      color: AppThemeHelper.textColor(context).withOpacity(0.6),
+      color: AppThemeHelper.textColor(context).withAlpha(153),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     filled: true,
@@ -99,7 +92,3 @@ InputDecoration buildInputDecoration(BuildContext context, String labelText) {
     ),
   );
 }
-
-
-
-

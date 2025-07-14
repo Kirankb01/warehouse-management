@@ -45,8 +45,6 @@ class ProductProvider extends ChangeNotifier {
 
   Future<void> deleteProduct(String sku) async {
     await _productBox.delete(sku);
-    print(_productBox.keys);
-
     loadProducts();
 
   }

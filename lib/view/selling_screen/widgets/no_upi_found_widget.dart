@@ -34,7 +34,7 @@ class NoUpiFoundWidget extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               'No UPI ID was found for this organization. '
-                  'Please complete your Organization Profile to enable UPI payments.',
+              'Please complete your Organization Profile to enable UPI payments.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -45,22 +45,19 @@ class NoUpiFoundWidget extends StatelessWidget {
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: onCompleteProfile,
-              icon: Icon(
-                Icons.settings,
-                color: AppColors.pureWhite,
-              ),
+              icon: Icon(Icons.settings, color: AppColors.pureWhite),
               label: Text(
                 'Complete Profile',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.pureWhite,
-                ),
+                style: TextStyle(fontSize: 16, color: AppColors.pureWhite),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor:
-                AppThemeHelper.elevatedButtonBackground(context),
-                padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                backgroundColor: AppThemeHelper.elevatedButtonBackground(
+                  context,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

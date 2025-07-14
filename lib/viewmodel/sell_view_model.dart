@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/models/sale.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
@@ -9,7 +8,6 @@ import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/sales_provider.dart';
 import 'package:warehouse_management/viewmodel/summary_view_model.dart';
 import 'package:warehouse_management/utils/helpers.dart';
-
 import '../view/selling_screen/screens/selling_screen.dart';
 
 class SellViewModel {
@@ -160,7 +158,9 @@ class SellViewModel {
       customerMobileController: customerMobileController,
       customerEmailController: customerEmailController,
       items: items,
-    )) return;
+    )) {
+      return;
+    }
 
     final confirmed = await showConfirmSaleDialog(
       context,
@@ -291,4 +291,6 @@ class SellViewModel {
       return sum + (qty * price);
     });
   }
+
+
 }

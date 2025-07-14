@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
@@ -103,11 +104,21 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                     color: AppThemeHelper.cardColor(context),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(10),
-                      leading: fileExists
+                      leading: !kIsWeb && fileExists
                           ? ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.file(
                           File(product.imagePath!),
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                          : product.imageBytes != null && kIsWeb
+                          ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.memory(
+                          product.imageBytes!,
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,

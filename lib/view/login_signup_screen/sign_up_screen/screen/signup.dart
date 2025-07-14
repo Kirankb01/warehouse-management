@@ -52,7 +52,6 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Stack(
@@ -61,9 +60,7 @@ class _SignupState extends State<Signup> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  'assets/Taking notes-cuate.png',
-                ),
+                image: AssetImage('assets/Taking notes-cuate.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -99,8 +96,8 @@ class _SignupState extends State<Signup> {
                       children: [
                         Center(
                           child: SizedBox(
-                            height: screenHeight * 0.1,
-                            width: screenHeight * 0.1,
+                            height: 70,
+                            width: 70,
                             child: Image.asset('assets/login_img.png'),
                           ),
                         ),
@@ -108,6 +105,7 @@ class _SignupState extends State<Signup> {
                         const Text(
                           'Welcome to TrackIn',
                           style: TextStyle(
+                            fontFamily: 'RobotoCustom',
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
@@ -328,7 +326,10 @@ class _SignupState extends State<Signup> {
                             const Text("Already have an account?"),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushReplacementNamed(context, RouteNames.login);
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  RouteNames.login,
+                                );
                               },
                               child: const Text(
                                 'Login',

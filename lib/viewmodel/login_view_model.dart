@@ -64,23 +64,23 @@ class LoginViewModel extends ChangeNotifier {
     final hashedPassword = _hashPassword(password);
     final userBox = Hive.box<User>('users');
 
-    try {
-      final user = userBox.values.firstWhere(
-            (u) => u.email == email && u.password == hashedPassword,
-      );
+    final userExists = userBox.values.any(
+          (u) => u.email == email && u.password == hashedPassword,
+    );
 
+    if (userExists) {
       final authBox = Hive.box('authBox');
       authBox.put('isLoggedIn', true);
-
       isLoading = false;
       notifyListeners();
       return true;
-    } catch (e) {
+    } else {
       isLoading = false;
       errorMessage = 'Invalid email or password';
       notifyListeners();
       return false;
     }
+
   }
 
 

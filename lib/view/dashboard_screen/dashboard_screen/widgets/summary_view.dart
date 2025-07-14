@@ -69,7 +69,9 @@ class SummaryView extends StatelessWidget {
                         DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: summary.selectedFilter,
-                            dropdownColor: AppThemeHelper.summaryContainer(context),
+                            dropdownColor: AppThemeHelper.summaryContainer(
+                              context,
+                            ),
                             iconEnabledColor: AppColors.pureWhite,
                             style: TextStyle(
                               color: AppColors.pureWhite, // Updated
@@ -80,21 +82,22 @@ class SummaryView extends StatelessWidget {
                                 summary.setFilter(newValue);
                               }
                             },
-                            items: ['Today', 'This Week', 'This Month'].map(
-                                  (value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(
-                                      color: AppColors.pureWhite,
+                            items:
+                                ['Today', 'This Week', 'This Month'].map((
+                                  value,
+                                ) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        color: AppColors.pureWhite,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ).toList(),
+                                  );
+                                }).toList(),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

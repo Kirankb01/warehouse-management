@@ -8,7 +8,6 @@ import 'package:warehouse_management/view/selling_screen/screens/selling_screen.
 import 'package:warehouse_management/view/settings_screens/settings_screen/screen/settings_screen.dart';
 import '../../constants/route_constants.dart';
 
-
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
 
@@ -19,7 +18,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int currentIndex = 0;
 
-  List screens =[
+  List screens = [
     const DashboardScreen(),
     ItemsScreen(),
     const SellScreen(),
@@ -34,12 +33,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            currentIndex= 2;
+            currentIndex = 2;
           });
         },
         shape: CircleBorder(),
         backgroundColor: AppColors.primary,
-        child: Icon(Icons.point_of_sale,color: AppColors.pureWhite,),
+        child: Icon(Icons.point_of_sale, color: AppColors.pureWhite),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -56,40 +55,47 @@ class _BottomNavBarState extends State<BottomNavBar> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  currentIndex= 0;
+                  currentIndex = 0;
                 });
               },
               icon: Icon(
                 Icons.dashboard_outlined,
                 size: 25,
-                color: currentIndex == 0 ? AppColors.primary : Colors.grey.shade500,
+                color:
+                    currentIndex == 0
+                        ? AppColors.primary
+                        : Colors.grey.shade500,
               ),
             ),
             IconButton(
               onPressed: () {
                 setState(() {
-                  currentIndex= 1;
+                  currentIndex = 1;
                 });
               },
               icon: Icon(
                 Icons.category_outlined,
                 size: 25,
-                color: currentIndex == 1 ? AppColors.primary
-                : Colors.grey.shade500,
+                color:
+                    currentIndex == 1
+                        ? AppColors.primary
+                        : Colors.grey.shade500,
               ),
             ),
             SizedBox(width: 15),
             IconButton(
               onPressed: () {
                 setState(() {
-                  currentIndex= 3;
+                  currentIndex = 3;
                 });
               },
               icon: Icon(
                 Icons.history,
                 size: 25,
-                color: currentIndex == 3 ? AppColors.primary
-                : AppColors.navBarUnselected,
+                color:
+                    currentIndex == 3
+                        ? AppColors.primary
+                        : AppColors.navBarUnselected,
               ),
             ),
             IconButton(
@@ -102,7 +108,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               icon: Icon(
                 Icons.settings,
                 size: 25,
-                color: currentIndex == 4 ? AppColors.primary : AppColors.navBarUnselected,
+                color:
+                    currentIndex == 4
+                        ? AppColors.primary
+                        : AppColors.navBarUnselected,
               ),
             ),
           ],

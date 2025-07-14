@@ -1,7 +1,5 @@
 import 'package:warehouse_management/models/sale.dart';
 
-
-
 List<Sale> applySaleFilters(List<Sale> allSales, String searchText, String selectedFilter) {
   DateTime now = DateTime.now();
 

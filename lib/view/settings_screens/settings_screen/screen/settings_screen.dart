@@ -129,10 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap:
                   () => showDialog(
                     context: context,
-                    builder:
-                        (ctx) => RatingDialog(
-                          onRated: (rating) => print('User rated: $rating'),
-                        ),
+                    builder: (ctx) => RatingDialog(onRated: (rating) => ()),
                   ),
             ),
             SizedBox(height: size.height * 0.04),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
@@ -11,8 +12,6 @@ import 'package:warehouse_management/view/selling_screen/widgets/sale_item_form_
 import 'package:warehouse_management/viewmodel/product_provider.dart';
 import 'package:warehouse_management/viewmodel/sell_view_model.dart';
 
-
-
 class SellScreen extends StatefulWidget {
   const SellScreen({super.key});
 
@@ -24,7 +23,8 @@ enum PaymentMethod { cash, gpay }
 
 class _SellScreenState extends State<SellScreen> {
   final TextEditingController customerNameController = TextEditingController();
-  final TextEditingController customerMobileController = TextEditingController();
+  final TextEditingController customerMobileController =
+      TextEditingController();
   final TextEditingController customerEmailController = TextEditingController();
 
   final List<Map<String, TextEditingController>> items = [];
@@ -79,6 +79,7 @@ class _SellScreenState extends State<SellScreen> {
     );
 
     if (selected != null) {
+      FocusScope.of(context).unfocus();
       setState(() {
         items[index]['product']!.text = selected.itemName;
         items[index]['price']!.text = selected.sellingPrice.toString();
@@ -88,7 +89,7 @@ class _SellScreenState extends State<SellScreen> {
   }
 
   Future<List<Map<String, String>>> getUniqueCustomers() async {
-    final box = await Hive.openBox<Sale>('sales');
+    final box = await Hive.openBox<Sale>('salesBox');
     final customers = <String, Map<String, String>>{};
 
     for (var sale in box.values) {
@@ -104,7 +105,6 @@ class _SellScreenState extends State<SellScreen> {
 
     return customers.values.toList();
   }
-
 
   @override
   void dispose() {
@@ -140,49 +140,56 @@ class _SellScreenState extends State<SellScreen> {
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
-                // TypeAheadFormField<Map<String, String>>(
-                //   textFieldConfiguration: TextFieldConfiguration(
-                //     controller: customerNameController,
-                //     decoration: InputDecoration(
-                //       labelText: 'Customer Name',
-                //       filled: true,
-                //       fillColor: cardColor,
-                //       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                //       labelStyle: TextStyle(color: textColor.withAlpha(180)),
-                //     ),
-                //     style: TextStyle(color: textColor),
-                //   ),
-                //   suggestionsCallback: (pattern) async {
-                //     final customers = await getUniqueCustomers();
-                //     return customers.where((c) =>
-                //         c['name']!.toLowerCase().contains(pattern.toLowerCase())).toList();
-                //   },
-                //   itemBuilder: (context, customer) {
-                //     return ListTile(
-                //       title: Text(customer['name']!),
-                //       subtitle: Text(customer['phone'] ?? ''),
-                //     );
-                //   },
-                //   onSuggestionSelected: (customer) {
-                //     customerNameController.text = customer['name']!;
-                //     customerMobileController.text = customer['phone'] ?? '';
-                //     customerEmailController.text = customer['email'] ?? '';
-                //   },
-                // ),
-                TextField(
+                TypeAheadField<Map<String, String>>(
                   controller: customerNameController,
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(color: textColor),
-                  decoration: InputDecoration(
-                    labelText: 'Customer Name',
-                    hintText: 'Enter Customer Name',
-                    hintStyle: TextStyle(color: textColor.withAlpha(150)),
-                    labelStyle: TextStyle(color: textColor.withAlpha(180)),
-                    filled: true,
-                    fillColor: cardColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
+                  hideOnEmpty: false,
+                  debounceDuration: const Duration(milliseconds: 300),
+                  suggestionsCallback: (String pattern) async {
+                    final customers = await getUniqueCustomers();
+                    return customers
+                        .where(
+                          (c) => c['name']!.toLowerCase().contains(
+                            pattern.toLowerCase(),
+                          ),
+                        )
+                        .toList();
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion['name'] ?? ''),
+                      subtitle: Text(suggestion['phone'] ?? ''),
+                    );
+                  },
+                  onSelected: (suggestion) {
+                    customerNameController.text = suggestion['name'] ?? '';
+                    customerMobileController.text = suggestion['phone'] ?? '';
+                    customerEmailController.text = suggestion['email'] ?? '';
+                  },
+                  builder: (context, _, focusNode) {
+                    return TextFormField(
+                      controller: customerNameController,
+                      focusNode: focusNode,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        labelText: 'Customer Name',
+                        filled: true,
+                        fillColor: cardColor,
+                        hintText: 'Enter Customer Name',
+                        hintStyle: TextStyle(color: textColor.withAlpha(120)),
+                        labelStyle: TextStyle(color: textColor.withAlpha(180)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+                  },
+                  emptyBuilder:
+                      (context) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("No matching customers found"),
+                      ),
                 ),
+
                 const SizedBox(height: 10),
                 TextField(
                   controller: customerMobileController,
@@ -195,7 +202,9 @@ class _SellScreenState extends State<SellScreen> {
                     labelStyle: TextStyle(color: textColor.withAlpha(180)),
                     filled: true,
                     fillColor: cardColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -210,18 +219,24 @@ class _SellScreenState extends State<SellScreen> {
                     labelStyle: TextStyle(color: textColor.withAlpha(180)),
                     filled: true,
                     fillColor: cardColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   'Items:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 ...List.generate(
                   items.length,
-                      (index) => SaleItemFormCard(
+                  (index) => SaleItemFormCard(
                     index: index,
                     items: items,
                     allProducts: allProducts,
@@ -242,16 +257,26 @@ class _SellScreenState extends State<SellScreen> {
                 const Divider(height: 30, thickness: 1),
                 Text(
                   'Total Price: ₹${total.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
                 ),
                 const SizedBox(height: 50),
                 Text(
                   'Select Payment Method',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   color: cardColor,
                   elevation: 2,
                   child: Column(
@@ -261,7 +286,8 @@ class _SellScreenState extends State<SellScreen> {
                         label: 'Cash in Hand',
                         value: PaymentMethod.cash,
                         selected: selectedPayment,
-                        onChanged: (value) => setState(() => selectedPayment = value!),
+                        onChanged:
+                            (value) => setState(() => selectedPayment = value!),
                         icon: Icons.money,
                       ),
                       const Divider(height: 0, thickness: 1),
@@ -270,7 +296,8 @@ class _SellScreenState extends State<SellScreen> {
                         label: 'GPay',
                         value: PaymentMethod.gpay,
                         selected: selectedPayment,
-                        onChanged: (value) => setState(() => selectedPayment = value!),
+                        onChanged:
+                            (value) => setState(() => selectedPayment = value!),
                         icon: Icons.qr_code_2,
                       ),
                     ],
@@ -296,7 +323,8 @@ class _SellScreenState extends State<SellScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.successColor,
                     foregroundColor: AppColors.pureWhite,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    minimumSize: const Size.fromHeight(50),
                     textStyle: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -309,4 +337,3 @@ class _SellScreenState extends State<SellScreen> {
     );
   }
 }
-

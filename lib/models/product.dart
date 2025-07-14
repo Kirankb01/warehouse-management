@@ -1,5 +1,5 @@
+import 'dart:typed_data';
 import 'package:hive/hive.dart';
-
 part 'product.g.dart';
 
 @HiveType(typeId: 0)
@@ -34,6 +34,9 @@ class Product extends HiveObject {
   @HiveField(9)
   String? description;
 
+  @HiveField(10)
+  Uint8List? imageBytes;
+
   Product({
     required this.supplierName,
     required this.itemName,
@@ -44,8 +47,8 @@ class Product extends HiveObject {
     required this.sellingPrice,
     required this.costPrice,
     this.imagePath,
-    required this.description
+    required this.description,
+    this.imageBytes
   });
-
 
 }

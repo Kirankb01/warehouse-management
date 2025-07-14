@@ -26,28 +26,56 @@ class OrganizationDetailsCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildItem(context, Icons.language, 'Country', viewModel.selectedCountry ?? ''),
+                  _buildItem(
+                    context,
+                    Icons.language,
+                    'Country',
+                    viewModel.selectedCountry ?? '',
+                  ),
                   const SizedBox(height: 24),
-                  _buildItem(context, Icons.access_time_filled_outlined, 'Time Zone', viewModel.selectedTimezone ?? ''),
+                  _buildItem(
+                    context,
+                    Icons.access_time_filled_outlined,
+                    'Time Zone',
+                    viewModel.selectedTimezone ?? '',
+                  ),
                   const SizedBox(height: 24),
-                  _buildItem(context, Icons.phone, 'Mobile Number', viewModel.phoneController.text),
-
+                  _buildItem(
+                    context,
+                    Icons.phone,
+                    'Mobile Number',
+                    viewModel.phoneController.text,
+                  ),
                 ],
               ),
             ),
 
             const SizedBox(width: 40), // spacing between columns
-
             // Right Column
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildItem(context, Icons.monetization_on, 'Currency', viewModel.selectedCurrency ?? ''),
+                  _buildItem(
+                    context,
+                    Icons.monetization_on,
+                    'Currency',
+                    viewModel.selectedCurrency ?? '',
+                  ),
                   const SizedBox(height: 24),
-                  _buildItem(context, Icons.date_range, 'Date Format', viewModel.selectedDateFormat ?? ''),
+                  _buildItem(
+                    context,
+                    Icons.date_range,
+                    'Date Format',
+                    viewModel.selectedDateFormat ?? '',
+                  ),
                   const SizedBox(height: 24),
-                  _buildItem(context, Icons.qr_code, 'UPI ID', viewModel.upiController.text),
+                  _buildItem(
+                    context,
+                    Icons.qr_code,
+                    'UPI ID',
+                    viewModel.upiController.text,
+                  ),
                 ],
               ),
             ),
@@ -57,7 +85,12 @@ class OrganizationDetailsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(BuildContext context, IconData icon, String label, String value) {
+  Widget _buildItem(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,7 +98,10 @@ class OrganizationDetailsCard extends StatelessWidget {
           children: [
             Icon(icon, color: AppThemeHelper.iconColor(context), size: 20),
             const SizedBox(width: 8),
-            Text(label, style: TextStyle(color: AppThemeHelper.textColor(context))),
+            Text(
+              label,
+              style: TextStyle(color: AppThemeHelper.textColor(context)),
+            ),
           ],
         ),
         const SizedBox(height: 6),
@@ -74,4 +110,3 @@ class OrganizationDetailsCard extends StatelessWidget {
     );
   }
 }
-

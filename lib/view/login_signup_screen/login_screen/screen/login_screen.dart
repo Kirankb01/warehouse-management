@@ -35,8 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-
-
   void _handleLogin(BuildContext context) async {
     final viewModel = Provider.of<LoginViewModel>(context, listen: false);
     final success = await viewModel.login();
@@ -44,7 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacementNamed(context, RouteNames.onBoard);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // Blur effect
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: const ColoredBox(
-              color: Color(0x1AFFFFFF),
-            ),
+            child: const ColoredBox(color: Color(0x1AFFFFFF)),
           ),
 
           // Login Form
@@ -93,14 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: 80,
-                        width: 80,
+                        height: 70,
+                        width: 70,
                         child: Image.asset('assets/login_img.png'),
                       ),
                       const SizedBox(height: 32),
                       const Text(
                         'Welcome to TrackIn',
                         style: TextStyle(
+                          fontFamily: 'RobotoCustom',
                           fontSize: 26,
                           fontWeight: FontWeight.w700,
                           color: Colors.black87,
@@ -231,9 +227,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               listen: false,
                             ).loginWithBiometrics().then((success) {
                               if (success) {
-                                Navigator.pushReplacementNamed(
+                                Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   RouteNames.onBoard,
+                                      (route) => false,
                                 );
                               } else {
                                 final errorMsg =
@@ -242,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       listen: false,
                                     ).errorMessage;
                                 if (errorMsg != null) {
-                                  print(errorMsg);
+
                                 }
                               }
                             });

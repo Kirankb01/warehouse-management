@@ -1,7 +1,7 @@
-import 'dart:io';
+import 'dart:io' as io;
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
@@ -36,6 +36,7 @@ class _AddItemState extends State<AddItem> {
   final descriptionController = TextEditingController();
 
   String? imagePath;
+  Uint8List? imageBytes;
 
   @override
   void dispose() {
@@ -64,6 +65,7 @@ class _AddItemState extends State<AddItem> {
         costPrice: double.tryParse(costPriceController.text.trim()) ?? 0.0,
         imagePath: imagePath,
         description: descriptionController.text.trim(),
+        imageBytes: imageBytes,
       );
 
       final newPurchase = Purchase(
@@ -82,22 +84,35 @@ class _AddItemState extends State<AddItem> {
           Navigator.pop(context);
         },
         onFailure: () {
-          // Optional error handling UI
+
         },
       );
     }
   }
 
   Future<void> pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = path.basename(pickedFile.path);
-      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
 
-      setState(() {
-        imagePath = savedImage.path;
-      });
+    if (result != null) {
+      if (kIsWeb) {
+        setState(() {
+          imageBytes = result.files.single.bytes!;
+          imagePath = null;
+        });
+      } else {
+        final path = result.files.single.path;
+        if (path != null) {
+          final file = io.File(path);
+          final appDir = await getApplicationDocumentsDirectory();
+          final fileName = path.split('/').last;
+          final savedImage = await file.copy('${appDir.path}/$fileName');
+
+          setState(() {
+            imagePath = savedImage.path;
+            imageBytes = null;
+          });
+        }
+      }
     }
   }
 
@@ -142,7 +157,11 @@ class _AddItemState extends State<AddItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: ImagePickerBox(imagePath: imagePath, onTap: pickImage),
+                  child: ImagePickerBox(
+                    imagePath: imagePath,
+                    imageBytes: imageBytes,
+                    onTap: pickImage,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 ProductDetailsSection(

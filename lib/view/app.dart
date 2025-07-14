@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
               themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           initialRoute:
               Hive.box('authBox').get('isLoggedIn', defaultValue: false)
-                  ? '/homepage'
-                  : '/login',
+                  ? RouteNames.navBar
+                  : RouteNames.login,
           routes: {
             RouteNames.privacyPolicy: (context) => PrivacyPolicyPage(),
             RouteNames.signup: (context) => Signup(),

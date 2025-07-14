@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/view/login_signup_screen/shared_widget/text_field_decoration.dart';
 
-
 class CustomTextField extends StatelessWidget {
   final String label;
   final IconData prefixIcon;

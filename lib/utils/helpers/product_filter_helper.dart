@@ -1,10 +1,6 @@
 import 'package:warehouse_management/models/product.dart';
 import 'package:flutter/material.dart';
-
 import 'package:warehouse_management/utils/helpers/bottomSheet_helpers.dart';
-
-
-import 'package:flutter/material.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/utils/helpers.dart'; // for showBrandFilterDialog
 
