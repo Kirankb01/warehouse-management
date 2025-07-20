@@ -9,8 +9,6 @@ class BrandProvider extends ChangeNotifier {
 
   List<Brand> get brands => _brands;
 
-
-
   BrandProvider() {
     _brandBox = Hive.box<Brand>('brandsBox');
     loadBrands();
@@ -22,8 +20,9 @@ class BrandProvider extends ChangeNotifier {
   }
 
   Future<void> addBrand(String name) async {
-
-    bool exists = _brands.any((b) => b.name.toLowerCase() == name.toLowerCase());
+    bool exists = _brands.any(
+      (b) => b.name.toLowerCase() == name.toLowerCase(),
+    );
 
     if (!exists) {
       final brand = Brand(name: name);
@@ -37,7 +36,7 @@ class BrandProvider extends ChangeNotifier {
     try {
       final brandsList = _brandBox.values.toList();
       final index = brandsList.indexWhere(
-            (brand) => brand.name.toLowerCase() == name.toLowerCase(),
+        (brand) => brand.name.toLowerCase() == name.toLowerCase(),
       );
 
       if (index != -1) {
@@ -45,8 +44,9 @@ class BrandProvider extends ChangeNotifier {
         await _brandBox.delete(key);
         loadBrands();
       }
-    } catch (e) {
-      print('Error deleting brand: $e');
+    } catch (e, stackTrace) {
+      debugPrint('Error removing brand: $e');
+      debugPrintStack(stackTrace: stackTrace);
     }
   }
 
@@ -54,9 +54,4 @@ class BrandProvider extends ChangeNotifier {
     _brands.clear();
     notifyListeners();
   }
-
 }
-
-
-
-

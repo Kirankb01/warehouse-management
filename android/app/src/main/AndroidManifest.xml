@@ -10,7 +10,7 @@
 
     <application
         android:name="${applicationName}"
-        android:label="warehousemanagement"
+        android:label="TrackIn"
         android:icon="@mipmap/ic_launcher">
 
         <activity

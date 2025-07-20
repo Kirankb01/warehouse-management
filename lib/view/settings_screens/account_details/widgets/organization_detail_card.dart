@@ -21,7 +21,6 @@ class OrganizationDetailsCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Left Column
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,9 +34,9 @@ class OrganizationDetailsCard extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildItem(
                     context,
-                    Icons.access_time_filled_outlined,
-                    'Time Zone',
-                    viewModel.selectedTimezone ?? '',
+                    Icons.monetization_on,
+                    'Currency',
+                    viewModel.selectedCurrency ?? '',
                   ),
                   const SizedBox(height: 24),
                   _buildItem(
@@ -50,17 +49,17 @@ class OrganizationDetailsCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 40), // spacing between columns
-            // Right Column
+            const SizedBox(width: 24),
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildItem(
                     context,
-                    Icons.monetization_on,
-                    'Currency',
-                    viewModel.selectedCurrency ?? '',
+                    Icons.access_time_filled_outlined,
+                    'Time Zone',
+                    viewModel.selectedTimezone ?? '',
                   ),
                   const SizedBox(height: 24),
                   _buildItem(
@@ -75,6 +74,7 @@ class OrganizationDetailsCard extends StatelessWidget {
                     Icons.qr_code,
                     'UPI ID',
                     viewModel.upiController.text,
+                    maxLines: 2,
                   ),
                 ],
               ),
@@ -86,11 +86,12 @@ class OrganizationDetailsCard extends StatelessWidget {
   }
 
   Widget _buildItem(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String value,
-  ) {
+      BuildContext context,
+      IconData icon,
+      String label,
+      String value, {
+        int maxLines = 1,
+      }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -105,7 +106,12 @@ class OrganizationDetailsCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 6),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }

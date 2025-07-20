@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/constants/route_constants.dart';
@@ -55,42 +55,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final summaryVM = Provider.of<SummaryViewModel>(context);
-    summaryVM.initScreenSize(screenWidth, screenHeight);
-    final box = Hive.box<AppSettings>('app_settings');
-    final orgName = box.isNotEmpty ? box.getAt(0)?.organizationName ?? '' : '';
 
     return Scaffold(
       backgroundColor: AppThemeHelper.dashBoardBackground(context),
-      appBar: AppBar(
-        backgroundColor: AppThemeHelper.dashAppBarBackground(context),
-        title: Text(
-          'Welcome $orgName',
-          style: AppTextStyles.appBarText.copyWith(
-            color: AppThemeHelper.textColor(context),
-          ),
-        ),
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: Consumer<ProductProvider>(
-              builder: (context, productProvider, _) {
-                final hasNotifications = productProvider.products.any(
-                  (p) => p.openingStock <= p.reorderPoint,
-                );
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: ValueListenableBuilder(
+          valueListenable: Hive.box<AppSettings>('app_settings').listenable(),
+          builder: (context, Box<AppSettings> box, _) {
+            final orgName =
+                box.isNotEmpty ? box.getAt(0)?.organizationName ?? '' : '';
 
-                return GestureDetector(
-                  onTap:
-                      () =>
-                          Navigator.pushNamed(context, RouteNames.notification),
-                  child: NotificationIcon(hasNotifications: hasNotifications),
-                );
-              },
-            ),
-          ),
-        ],
+            return AppBar(
+              backgroundColor: AppThemeHelper.dashAppBarBackground(context),
+              elevation: 0,
+              title: Text(
+                'Welcome $orgName',
+                style: AppTextStyles.appBarText.copyWith(
+                  color: AppThemeHelper.textColor(context),
+                ),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 25),
+                  child: Consumer<ProductProvider>(
+                    builder: (context, productProvider, _) {
+                      final hasNotifications = productProvider.products.any(
+                        (p) => p.openingStock <= p.reorderPoint,
+                      );
+
+                      return GestureDetector(
+                        onTap:
+                            () => Navigator.pushNamed(
+                              context,
+                              RouteNames.notification,
+                            ),
+                        child: NotificationIcon(
+                          hasNotifications: hasNotifications,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
+
       body: Container(
         decoration: BoxDecoration(
           gradient:

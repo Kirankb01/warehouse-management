@@ -1,0 +1,33 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "warehousemanagement-20658",
+          "appId": "1:1032598054781:android:36b99caefbae0e055b4e14",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "warehousemanagement-20658",
+          "configurations": {
+            "android": "1:1032598054781:android:36b99caefbae0e055b4e14",
+            "ios": "1:1032598054781:ios:917f8dd72539a16d5b4e14",
+            "macos": "1:1032598054781:ios:917f8dd72539a16d5b4e14",
+            "web": "1:1032598054781:web:058283375ae715505b4e14",
+            "windows": "1:1032598054781:web:2b462a1d92e642a45b4e14"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

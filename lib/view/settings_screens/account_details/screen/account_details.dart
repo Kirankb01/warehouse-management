@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse_management/constants/app_text_styles.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
-import 'dart:io';
 import 'package:warehouse_management/view/settings_screens/account_details/widgets/organization_detail_card.dart';
 import 'package:warehouse_management/viewmodel/organization_profile_view_model.dart';
 
@@ -81,20 +80,18 @@ class _AccountDetailsState extends State<AccountDetails> {
                           child: CircleAvatar(
                             radius: 30,
                             backgroundColor: AppThemeHelper.cardColor(context),
-                            backgroundImage: (viewModel.logoPath != null && File(viewModel.logoPath!).existsSync())
-                                ? FileImage(File(viewModel.logoPath!))
-                                : null,
+                            backgroundImage: viewModel.getLogoImageProvider(),
                             child: viewModel.logoPath == null
                                 ? const Icon(Icons.other_houses_outlined)
                                 : null,
                           ),
                         ),
+
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
 
-                  // Details Card
                   OrganizationDetailsCard(viewModel: viewModel),
                 ],
               ),

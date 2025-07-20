@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:warehouse_management/models/product.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
 import 'package:warehouse_management/view/all_items_screen/item_detail_screen/screen/items_details.dart';
@@ -57,7 +58,7 @@ class ProductListItem extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: (15.sp).clamp(12.0, 22.0),
                       fontWeight: FontWeight.w600,
                       color: AppThemeHelper.textColor(context),
                     ),
@@ -66,7 +67,7 @@ class ProductListItem extends StatelessWidget {
                   Text(
                     "Brand: ${product.brand}",
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize:(13.sp).clamp(12.0, 15.0),
                       color: AppThemeHelper.textColor(context).withAlpha(153),
                     ),
                   ),

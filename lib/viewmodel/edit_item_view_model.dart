@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/models/product.dart';
@@ -19,6 +20,7 @@ class EditItemViewModel {
     required TextEditingController descriptionController,
     required String? selectedBrand,
     required String? imagePath,
+    required Uint8List? imageBytes,
   }) {
     if (!formKey.currentState!.validate()) return;
 
@@ -33,6 +35,7 @@ class EditItemViewModel {
       costPrice: double.tryParse(costController.text.trim()) ?? 0.0,
       imagePath: imagePath,
       description: descriptionController.text.trim(),
+      imageBytes: imageBytes
     );
 
     Provider.of<ProductProvider>(context, listen: false).updateProduct(updatedProduct);

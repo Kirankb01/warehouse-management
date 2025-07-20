@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:warehouse_management/models/app_settings.dart';
@@ -63,25 +65,62 @@ class OrganizationProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  ImageProvider? getLogoImageProvider() {
+    if (logoPath == null) return null;
+
+    try {
+      if (kIsWeb) {
+        return MemoryImage(base64Decode(logoPath!));
+      } else {
+        final file = File(logoPath!);
+        if (file.existsSync()) {
+          return FileImage(file);
+        }
+      }
+    } catch (_) {
+      return null;
+    }
+
+    return null;
+  }
+
 
   Future<void> pickLogo() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = path.basename(image.path); // keep the original filename
-      final savedImagePath = path.join(appDir.path, 'logos', fileName);
+    if (kIsWeb) {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+        withData: true,
+      );
 
-      // Create 'logos' folder if not exists
-      final logoDir = Directory(path.join(appDir.path, 'logos'));
-      if (!await logoDir.exists()) {
-        await logoDir.create(recursive: true);
+      if (result != null && result.files.single.bytes != null) {
+        final bytes = result.files.single.bytes!;
+        final base64Logo = base64Encode(bytes);
+        logoPath = base64Logo;
+        notifyListeners();
       }
+    } else {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
 
-      // Copy the image to a permanent location
-      final savedImage = await File(image.path).copy(savedImagePath);
+      if (result != null && result.files.single.path != null) {
+        final imagePath = result.files.single.path!;
+        final appDir = await getApplicationDocumentsDirectory();
+        final fileName = path.basename(imagePath);
+        final logoDir = Directory(path.join(appDir.path, 'logos'));
 
-      logoPath = savedImage.path;
-      notifyListeners();
+        if (!await logoDir.exists()) {
+          await logoDir.create(recursive: true);
+        }
+
+        final savedImagePath = path.join(logoDir.path, fileName);
+        final savedImage = await File(imagePath).copy(savedImagePath);
+
+        logoPath = savedImage.path;
+        notifyListeners();
+      }
     }
   }
 
@@ -104,7 +143,6 @@ class OrganizationProfileViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   final TextEditingController languageController = TextEditingController();
   bool isDarkMode = false;
@@ -138,15 +176,13 @@ class OrganizationProfileViewModel extends ChangeNotifier {
     return false;
   }
 
-
-
   Widget buildDropdown(
-      BuildContext context,
-      String label,
-      String? value,
-      List<String> items,
-      void Function(String?) onChanged,
-      ) {
+    BuildContext context,
+    String label,
+    String? value,
+    List<String> items,
+    void Function(String?) onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: Column(
@@ -165,7 +201,10 @@ class OrganizationProfileViewModel extends ChangeNotifier {
             decoration: InputDecoration(
               filled: true,
               fillColor: AppThemeHelper.inputFieldBackground(context),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 14,
+              ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
@@ -188,18 +227,24 @@ class OrganizationProfileViewModel extends ChangeNotifier {
                 ),
               ),
             ),
-            icon: Icon(Icons.keyboard_arrow_down_rounded, color: AppThemeHelper.iconColor(context)),
+            icon: Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: AppThemeHelper.iconColor(context),
+            ),
             dropdownColor: AppThemeHelper.cardColor(context),
             style: TextStyle(color: AppThemeHelper.textColor(context)),
             onChanged: onChanged,
-            items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+            items:
+                items
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .toList(),
           ),
         ],
       ),
     );
   }
 
-  String generateUpiLink(BuildContext context,double amount) {
+  String generateUpiLink(BuildContext context, double amount) {
     final upiId = upiController.text.trim();
     final orgName = orgNameController.text.trim();
 

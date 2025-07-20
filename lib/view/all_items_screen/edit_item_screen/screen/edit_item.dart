@@ -136,7 +136,7 @@ class _EditItemState extends State<EditItem> {
                 descriptionController: descriptionController,
                 selectedBrand: selectedBrand,
                 imagePath: _imagePath,
-                // imageBytes: _imageBytes,
+                imageBytes: _imageBytes,
               );
             },
 

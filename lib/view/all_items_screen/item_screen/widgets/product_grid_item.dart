@@ -67,7 +67,7 @@ class ProductGridItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: (14.sp).clamp(11.0, 14.0),
+                fontSize: (14.sp).clamp(11.0, 20.0),
                 fontWeight: FontWeight.w600,
                 color: AppThemeHelper.textColor(context),
               ),

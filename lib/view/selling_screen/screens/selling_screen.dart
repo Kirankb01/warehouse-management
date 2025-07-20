@@ -140,54 +140,59 @@ class _SellScreenState extends State<SellScreen> {
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
-                TypeAheadField<Map<String, String>>(
-                  controller: customerNameController,
-                  hideOnEmpty: false,
-                  debounceDuration: const Duration(milliseconds: 300),
-                  suggestionsCallback: (String pattern) async {
-                    final customers = await getUniqueCustomers();
-                    return customers
-                        .where(
-                          (c) => c['name']!.toLowerCase().contains(
-                            pattern.toLowerCase(),
+                Theme(
+                  data: Theme.of(context).copyWith(cardColor: cardColor),
+                  child: TypeAheadField<Map<String, String>>(
+                    controller: customerNameController,
+                    hideOnEmpty: false,
+                    debounceDuration: const Duration(milliseconds: 300),
+                    suggestionsCallback: (String pattern) async {
+                      final customers = await getUniqueCustomers();
+                      return customers
+                          .where(
+                            (c) => c['name']!.toLowerCase().contains(
+                              pattern.toLowerCase(),
+                            ),
+                          )
+                          .toList();
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion['name'] ?? ''),
+                        subtitle: Text(suggestion['phone'] ?? ''),
+                      );
+                    },
+                    onSelected: (suggestion) {
+                      customerNameController.text = suggestion['name'] ?? '';
+                      customerMobileController.text = suggestion['phone'] ?? '';
+                      customerEmailController.text = suggestion['email'] ?? '';
+                    },
+                    builder: (context, _, focusNode) {
+                      return TextFormField(
+                        controller: customerNameController,
+                        focusNode: focusNode,
+                        style: TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          labelText: 'Customer Name',
+                          filled: true,
+                          fillColor: cardColor,
+                          hintText: 'Enter Customer Name',
+                          hintStyle: TextStyle(color: textColor.withAlpha(120)),
+                          labelStyle: TextStyle(
+                            color: textColor.withAlpha(180),
                           ),
-                        )
-                        .toList();
-                  },
-                  itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      title: Text(suggestion['name'] ?? ''),
-                      subtitle: Text(suggestion['phone'] ?? ''),
-                    );
-                  },
-                  onSelected: (suggestion) {
-                    customerNameController.text = suggestion['name'] ?? '';
-                    customerMobileController.text = suggestion['phone'] ?? '';
-                    customerEmailController.text = suggestion['email'] ?? '';
-                  },
-                  builder: (context, _, focusNode) {
-                    return TextFormField(
-                      controller: customerNameController,
-                      focusNode: focusNode,
-                      style: TextStyle(color: textColor),
-                      decoration: InputDecoration(
-                        labelText: 'Customer Name',
-                        filled: true,
-                        fillColor: cardColor,
-                        hintText: 'Enter Customer Name',
-                        hintStyle: TextStyle(color: textColor.withAlpha(120)),
-                        labelStyle: TextStyle(color: textColor.withAlpha(180)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  emptyBuilder:
-                      (context) => const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("No matching customers found"),
-                      ),
+                      );
+                    },
+                    emptyBuilder:
+                        (context) => const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("No matching customers found"),
+                        ),
+                  ),
                 ),
 
                 const SizedBox(height: 10),

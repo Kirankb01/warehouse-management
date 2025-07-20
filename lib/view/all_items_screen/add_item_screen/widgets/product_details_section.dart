@@ -61,11 +61,11 @@ class _ProductDetailsSectionState extends State<ProductDetailsSection> {
               capitalization: TextCapitalization.sentences,
             ),
             buildCustomTextField('SKU', widget.skuController, isRequired: true),
-            Padding(
-              padding: const EdgeInsets.only(right: 246),
-              child: const Text(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 'Brand',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Padding(

@@ -44,20 +44,6 @@ class _ItemsScreenState extends State<ItemsScreen> {
     });
   }
 
-  int _getCrossAxisCount(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    if (width >= 1200) return 4;
-    if (width >= 800) return 3;
-    return 2;
-  }
-
-  double _getChildAspectRatio(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    if (width >= 1200) return 1.2;
-    if (width >= 800) return 1.2;
-    return 0.83;
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,29 +84,54 @@ class _ItemsScreenState extends State<ItemsScreen> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: _filteredProducts.isEmpty
-                  ? Center(
-                child: Text(
-                  'No items found',
-                  style: TextStyle(color: AppThemeHelper.textColor(context)),
-                ),
-              )
-                  : isGridView
-                  ? GridView.builder(
-                itemCount: _filteredProducts.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: _getCrossAxisCount(context),
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: _getChildAspectRatio(context),
-                ),
-                itemBuilder: (context, index) =>
-                    ProductGridItem(product: _filteredProducts[index]),
-              )
-                  : ListView.builder(
-                itemCount: _filteredProducts.length,
-                itemBuilder: (context, index) =>
-                    ProductListItem(product: _filteredProducts[index]),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final maxWidth = constraints.maxWidth;
+
+                  int crossAxisCount;
+                  double itemHeight;
+
+                  if (maxWidth >= 1024) {
+                    crossAxisCount = 5;
+                    itemHeight = 280;
+                  } else if (maxWidth >= 600) {
+                    crossAxisCount = 3;
+                    itemHeight = 245;
+                  } else {
+                    crossAxisCount = 2;
+                    itemHeight = 230;
+                  }
+
+                  final itemWidth = maxWidth / crossAxisCount;
+                  final childAspectRatio = itemWidth / itemHeight;
+
+                  if (_filteredProducts.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'No items found',
+                        style: TextStyle(color: AppThemeHelper.textColor(context)),
+                      ),
+                    );
+                  }
+
+                  return isGridView
+                      ? GridView.builder(
+                    itemCount: _filteredProducts.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: childAspectRatio,
+                    ),
+                    itemBuilder: (context, index) =>
+                        ProductGridItem(product: _filteredProducts[index]),
+                  )
+                      : ListView.builder(
+                    itemCount: _filteredProducts.length,
+                    itemBuilder: (context, index) =>
+                        ProductListItem(product: _filteredProducts[index]),
+                  );
+                },
               ),
             ),
           ],
