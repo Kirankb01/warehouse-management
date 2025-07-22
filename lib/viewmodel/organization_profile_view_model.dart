@@ -84,7 +84,6 @@ class OrganizationProfileViewModel extends ChangeNotifier {
     return null;
   }
 
-
   Future<void> pickLogo() async {
     if (kIsWeb) {
       final result = await FilePicker.platform.pickFiles(

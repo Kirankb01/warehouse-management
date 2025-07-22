@@ -1,4 +1,3 @@
-
 class RouteNames {
   static const String privacyPolicy = '/privacy_policy';
   static const String signup = '/signup';

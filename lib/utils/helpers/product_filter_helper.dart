@@ -2,7 +2,7 @@ import 'package:warehouse_management/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:warehouse_management/utils/helpers/bottomSheet_helpers.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
-import 'package:warehouse_management/utils/helpers.dart'; // for showBrandFilterDialog
+import 'package:warehouse_management/utils/helpers.dart';
 
 void showFilterOptions({
   required BuildContext context,
@@ -33,7 +33,10 @@ void showFilterOptions({
             ),
             const SizedBox(height: 15),
             ListTile(
-              title: Text('Sort by Name (A-Z)', style: TextStyle(color: textColor)),
+              title: Text(
+                'Sort by Name (A-Z)',
+                style: TextStyle(color: textColor),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 onFilterChanged(selectedBrand, 'name_asc');
@@ -42,7 +45,10 @@ void showFilterOptions({
               selectedTileColor: AppThemeHelper.inputFieldBackground(context),
             ),
             ListTile(
-              title: Text('Sort by Stock (High to Low)', style: TextStyle(color: textColor)),
+              title: Text(
+                'Sort by Stock (High to Low)',
+                style: TextStyle(color: textColor),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 onFilterChanged(selectedBrand, 'stock_desc');
@@ -51,7 +57,10 @@ void showFilterOptions({
               selectedTileColor: AppThemeHelper.inputFieldBackground(context),
             ),
             ListTile(
-              title: Text('Low Stock (< 10)', style: TextStyle(color: textColor)),
+              title: Text(
+                'Low Stock (< 10)',
+                style: TextStyle(color: textColor),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 onFilterChanged(selectedBrand, 'low_stock');
@@ -60,7 +69,10 @@ void showFilterOptions({
               selectedTileColor: AppThemeHelper.inputFieldBackground(context),
             ),
             ListTile(
-              title: Text('Filter by Brand', style: TextStyle(color: textColor)),
+              title: Text(
+                'Filter by Brand',
+                style: TextStyle(color: textColor),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 showBrandFilterDialog(
@@ -86,10 +98,6 @@ void showFilterOptions({
   );
 }
 
-
-
-
-
 List<Product> filterAndSortProducts({
   required List<Product> products,
   String? selectedBrand,
@@ -107,8 +115,7 @@ List<Product> filterAndSortProducts({
   switch (sortOption) {
     case 'name_asc':
       filtered.sort(
-            (a, b) =>
-            a.itemName.toLowerCase().compareTo(b.itemName.toLowerCase()),
+        (a, b) => a.itemName.toLowerCase().compareTo(b.itemName.toLowerCase()),
       );
       break;
     case 'stock_desc':
@@ -122,18 +129,15 @@ List<Product> filterAndSortProducts({
   // Search
   if (searchQuery.isNotEmpty) {
     final query = searchQuery.toLowerCase();
-    filtered = filtered
-        .where((p) =>
-    p.itemName.toLowerCase().contains(query) ||
-        p.sku.toLowerCase().contains(query))
-        .toList();
+    filtered =
+        filtered
+            .where(
+              (p) =>
+                  p.itemName.toLowerCase().contains(query) ||
+                  p.sku.toLowerCase().contains(query),
+            )
+            .toList();
   }
 
   return filtered;
 }
-
-
-
-
-
-

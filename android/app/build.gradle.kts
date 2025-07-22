@@ -16,7 +16,7 @@ val keystoreProperties = Properties().apply {
     if (keystorePropertiesFile.exists()) {
         keystorePropertiesFile.inputStream().use { load(it) }
     } else {
-        println("❌ key.properties NOT FOUND")
+        println("key.properties NOT FOUND")
     }
 }
 

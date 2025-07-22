@@ -32,7 +32,6 @@ class AppThemeHelper {
   static Color summaryTextColor(BuildContext context) =>
       isDark(context) ? Colors.white : Colors.white;
 
-
   static Color borderColor(BuildContext context) =>
       isDark(context) ? Colors.grey : AppColors.lightBorder;
 
@@ -67,13 +66,13 @@ class AppThemeHelper {
       isDark(context) ? Colors.grey[700]! : Colors.grey[300]!;
 
   static Color shadowColor(BuildContext context) =>
-      isDark(context) ? Colors.black45 : const Color.fromRGBO(158, 158, 158, 0.2);
+      isDark(context)
+          ? Colors.black45
+          : const Color.fromRGBO(158, 158, 158, 0.2);
 
   static Color inputFieldColor(BuildContext context) =>
       isDark(context) ? Colors.grey[850]! : Colors.white;
 
   static Color primaryColor(BuildContext context) =>
       Theme.of(context).colorScheme.primary;
-
-
 }

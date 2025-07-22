@@ -13,22 +13,20 @@ void showDeleteSnackBar(BuildContext context, String message) {
       ),
       backgroundColor: AppColors.darkRed,
       behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       duration: const Duration(seconds: 2),
     ),
   );
 }
 
-
-
-
 void showSuccessSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, style: const TextStyle(color: AppColors.pureWhite)),
+      content: Text(
+        message,
+        style: const TextStyle(color: AppColors.pureWhite),
+      ),
       backgroundColor: AppColors.darkGreen,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -38,9 +36,11 @@ void showSuccessSnackBar(BuildContext context, String message) {
   );
 }
 
-
-
-void showSnackBar(BuildContext context,String message,{Color? backgroundColor}) {
+void showSnackBar(
+  BuildContext context,
+  String message, {
+  Color? backgroundColor,
+}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Row(
@@ -54,11 +54,7 @@ void showSnackBar(BuildContext context,String message,{Color? backgroundColor}) 
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       duration: const Duration(seconds: 3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
   );
 }
-
-

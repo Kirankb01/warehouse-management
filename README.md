@@ -58,7 +58,7 @@ lib/
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/warehouse-management.git
+   git clone https://github.com/Kirankb01/warehouse-management.git
    cd warehouse-management
    ```
 
@@ -94,22 +94,25 @@ lib/
 ## 📸 Screenshots
 
 ### 📊 Summary Dashboard
-> ![Summary](assets/screenshots/summary_screen.jpg)
+> ![Summary](assets/screenshots/dashboard.jpg)
 
 ### 🧾 Item Details Screen
 > ![Item Details](assets/screenshots/item_details.jpg)
 
-### 📦 All Items Screen
-> ![All Items](assets/screenshots/all_items.jpg)
+### 📦 All Items Screen (Grid view)
+> ![All Items](assets/screenshots/gridview.jpg)
+
+### 📦 All Items Screen (list view)
+> ![All Items](assets/screenshots/list_view.jpg)
 
 ### 📈 Selling History Screen
-> ![Selling History](assets/screenshots/selling_history.jpg)
+> ![Selling History](assets/screenshots/sales_history.jpg)
 
 ### ✏️ Edit Item Screen
 > ![Edit Item](assets/screenshots/edit_item.jpg)
 
 ### 📲 QR-Based Selling Screen
-> ![QR Sell](assets/screenshots/qr_sell.jpg)
+> ![QR Sell](assets/screenshots/qr.jpg)
 
 ---
 

@@ -3,9 +3,9 @@ import 'package:warehouse_management/models/sale.dart';
 
 class SalesHelper {
   static Map<String, double> computeMonthlySales(
-      String selectedPieFilter, {
-        required String hiveBoxName,
-      }) {
+    String selectedPieFilter, {
+    required String hiveBoxName,
+  }) {
     final salesBox = Hive.box<Sale>(hiveBoxName);
     final sales = salesBox.values;
 
@@ -50,7 +50,11 @@ class SalesHelper {
         break;
 
       case 'Last 3 Month':
-        startDate = DateTime(now.year, now.month - 2, 1); // first of 3 months ago
+        startDate = DateTime(
+          now.year,
+          now.month - 2,
+          1,
+        ); // first of 3 months ago
         endDate = DateTime(
           now.year,
           now.month,
@@ -67,10 +71,12 @@ class SalesHelper {
     }
 
     final filteredSales = sales.where((sale) {
-      final isAfterStart = startDate == null ||
+      final isAfterStart =
+          startDate == null ||
           sale.saleDateTime.isAfter(startDate) ||
           sale.saleDateTime.isAtSameMomentAs(startDate);
-      final isBeforeEnd = endDate == null ||
+      final isBeforeEnd =
+          endDate == null ||
           sale.saleDateTime.isBefore(endDate) ||
           sale.saleDateTime.isAtSameMomentAs(endDate);
       return isAfterStart && isBeforeEnd;

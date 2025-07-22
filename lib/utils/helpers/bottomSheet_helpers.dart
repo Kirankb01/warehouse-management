@@ -4,8 +4,10 @@ import 'package:warehouse_management/constants/app_colors.dart';
 import 'package:warehouse_management/viewmodel/brand_provider.dart';
 import 'package:warehouse_management/theme/app_theme_helper.dart';
 
-
-Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async {
+Future<bool> showDeleteBottomSheet(
+  BuildContext context,
+  String itemName,
+) async {
   final result = await showModalBottomSheet<bool>(
     backgroundColor: AppThemeHelper.dialogBackground(context),
     context: context,
@@ -30,7 +32,9 @@ Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async 
             const SizedBox(height: 10),
             Text(
               'Are you sure you want to delete "$itemName"?',
-              style: TextStyle(color: AppThemeHelper.textColor(context).withOpacity(0.8)),
+              style: TextStyle(
+                color: AppThemeHelper.textColor(context).withAlpha(204),
+              ),
             ),
             const SizedBox(height: 20),
             Row(
@@ -40,7 +44,9 @@ Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async 
                     onPressed: () => Navigator.pop(context, false),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppThemeHelper.textColor(context),
-                      side: BorderSide(color: AppThemeHelper.borderColor(context)),
+                      side: BorderSide(
+                        color: AppThemeHelper.borderColor(context),
+                      ),
                     ),
                     child: const Text('Cancel'),
                   ),
@@ -68,7 +74,6 @@ Future<bool> showDeleteBottomSheet(BuildContext context, String itemName) async 
 
   return result ?? false;
 }
-
 
 void showBrandFilterDialog({
   required BuildContext context,
@@ -99,7 +104,7 @@ void showBrandFilterDialog({
             ),
             Divider(color: AppThemeHelper.borderColor(context)),
             ...uniqueBrands.map(
-                  (brand) => ListTile(
+              (brand) => ListTile(
                 title: Text(
                   brand,
                   style: TextStyle(color: AppThemeHelper.textColor(context)),
@@ -127,7 +132,3 @@ void showBrandFilterDialog({
     },
   );
 }
-
-
-
-

@@ -27,7 +27,6 @@ class SummaryViewModel extends ChangeNotifier {
     loadSummaryData();
   }
 
-
   void loadSummaryData() {
     try {
       final saleBox = Hive.box<Sale>('salesBox');
@@ -44,11 +43,15 @@ class SummaryViewModel extends ChangeNotifier {
       });
 
       soldQty = sales.fold(0, (sum, sale) {
-        return sum + sale.items.fold(0, (itemSum, item) => itemSum + item.quantity);
+        return sum +
+            sale.items.fold(0, (itemSum, item) => itemSum + item.quantity);
       });
 
       earnings = sales.fold(0.0, (sum, sale) => sum + sale.total);
-      purchasedQty = purchases.fold(0, (sum, purchase) => sum + purchase.quantity);
+      purchasedQty = purchases.fold(
+        0,
+        (sum, purchase) => sum + purchase.quantity,
+      );
       spendings = purchases.fold(0.0, (sum, purchase) => sum + purchase.total);
 
       notifyListeners();
@@ -56,7 +59,6 @@ class SummaryViewModel extends ChangeNotifier {
       debugPrint(' Error loading summary data: $e\n$stack');
     }
   }
-
 
   bool _isInFilter(DateTime date, DateTime now) {
     switch (selectedFilter) {
@@ -87,5 +89,4 @@ class SummaryViewModel extends ChangeNotifier {
     selectedFilter = 'Today';
     notifyListeners();
   }
-
 }

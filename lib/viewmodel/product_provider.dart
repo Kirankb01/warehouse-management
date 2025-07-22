@@ -27,7 +27,6 @@ class ProductProvider extends ChangeNotifier {
     loadProducts();
   }
 
-
   void loadProducts() {
     _products = _productBox.values.toList();
     notifyListeners();
@@ -46,7 +45,6 @@ class ProductProvider extends ChangeNotifier {
   Future<void> deleteProduct(String sku) async {
     await _productBox.delete(sku);
     loadProducts();
-
   }
 
   Future<void> clearAll() async {

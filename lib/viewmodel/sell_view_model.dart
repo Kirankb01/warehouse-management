@@ -25,20 +25,26 @@ class SellViewModel {
     final customerMobile = customerMobileController.text.trim();
     final customerEmail = customerEmailController.text.trim();
 
-    final saleItems = items.map(
-          (item) => SaleItem(
-        productName: item['product']!.text.trim(),
-        quantity: int.tryParse(item['quantity']!.text) ?? 0,
-        price: double.tryParse(item['price']!.text) ?? 0.0,
-        sku: item['sku']!.text.trim(),
-      ),
-    ).toList();
+    final saleItems =
+        items
+            .map(
+              (item) => SaleItem(
+                productName: item['product']!.text.trim(),
+                quantity: int.tryParse(item['quantity']!.text) ?? 0,
+                price: double.tryParse(item['price']!.text) ?? 0.0,
+                sku: item['sku']!.text.trim(),
+              ),
+            )
+            .toList();
 
-    final productProvider = Provider.of<ProductProvider>(context, listen: false);
+    final productProvider = Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    );
 
     for (final saleItem in saleItems) {
       final product = productProvider.products.firstWhere(
-            (p) => p.sku == saleItem.sku,
+        (p) => p.sku == saleItem.sku,
         orElse: () => throw Exception('Product ${saleItem.sku} not found'),
       );
 
@@ -61,7 +67,10 @@ class SellViewModel {
     );
 
     final saleProvider = Provider.of<SalesProvider>(context, listen: false);
-    final summaryProvider = Provider.of<SummaryViewModel>(context, listen: false);
+    final summaryProvider = Provider.of<SummaryViewModel>(
+      context,
+      listen: false,
+    );
 
     await saleProvider.addSale(sale);
     await productProvider.reduceStockForSaleItems(saleItems);
@@ -123,9 +132,6 @@ class SellViewModel {
 
     return true;
   }
-
-
-
 
   static void resetSaleForm({
     required TextEditingController customerNameController,
@@ -195,10 +201,8 @@ class SellViewModel {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => QrPaymentScreen(
-            amount: total,
-            onPaid: () => submit(),
-          ),
+          builder:
+              (_) => QrPaymentScreen(amount: total, onPaid: () => submit()),
         ),
       );
     }
@@ -240,19 +244,27 @@ class SellViewModel {
                         style: TextStyle(color: textColor),
                         decoration: InputDecoration(
                           hintText: 'Search product...',
-                          hintStyle: TextStyle(color: textColor.withAlpha((0.6 * 255).toInt())),
-                          prefixIcon: Icon(Icons.search, color: textColor.withAlpha((0.6 * 255).toInt())),
+                          hintStyle: TextStyle(
+                            color: textColor.withAlpha((0.6 * 255).toInt()),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: textColor.withAlpha((0.6 * 255).toInt()),
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         onChanged: (value) {
                           setModalState(() {
-                            filteredList = allProducts
-                                .where((p) => p.itemName
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                                .toList();
+                            filteredList =
+                                allProducts
+                                    .where(
+                                      (p) => p.itemName.toLowerCase().contains(
+                                        value.toLowerCase(),
+                                      ),
+                                    )
+                                    .toList();
                           });
                         },
                       ),
@@ -262,13 +274,16 @@ class SellViewModel {
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: filteredList.length,
-                          itemBuilder: (context, i) => ListTile(
-                            title: Text(
-                              filteredList[i].itemName,
-                              style: TextStyle(color: textColor),
-                            ),
-                            onTap: () => Navigator.pop(context, filteredList[i]),
-                          ),
+                          itemBuilder:
+                              (context, i) => ListTile(
+                                title: Text(
+                                  filteredList[i].itemName,
+                                  style: TextStyle(color: textColor),
+                                ),
+                                onTap:
+                                    () =>
+                                        Navigator.pop(context, filteredList[i]),
+                              ),
                         ),
                       ),
                     ],
@@ -282,15 +297,11 @@ class SellViewModel {
     );
   }
 
-
-  static double calculateTotal(
-      List<Map<String, TextEditingController>> items) {
+  static double calculateTotal(List<Map<String, TextEditingController>> items) {
     return items.fold(0.0, (sum, item) {
       final qty = int.tryParse(item['quantity']!.text) ?? 0;
       final price = double.tryParse(item['price']!.text) ?? 0.0;
       return sum + (qty * price);
     });
   }
-
-
 }

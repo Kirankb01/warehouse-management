@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AppTextStyles {
   static TextStyle heading = TextStyle(
     fontSize: 22,

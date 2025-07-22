@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 
-
 class LoginViewModel extends ChangeNotifier {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -65,7 +64,7 @@ class LoginViewModel extends ChangeNotifier {
     final userBox = Hive.box<User>('users');
 
     final userExists = userBox.values.any(
-          (u) => u.email == email && u.password == hashedPassword,
+      (u) => u.email == email && u.password == hashedPassword,
     );
 
     if (userExists) {
@@ -80,9 +79,7 @@ class LoginViewModel extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-
   }
-
 
   Future<bool> isBiometricAvailable() async {
     try {
@@ -94,11 +91,10 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-
-
   Future<bool> loginWithBiometrics() async {
     try {
-      final canAuthenticate = await _auth.canCheckBiometrics && await _auth.isDeviceSupported();
+      final canAuthenticate =
+          await _auth.canCheckBiometrics && await _auth.isDeviceSupported();
       if (!canAuthenticate) {
         errorMessage = 'Biometric authentication not available';
         notifyListeners();
@@ -135,8 +131,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   @override
   void dispose() {
     emailController.dispose();
@@ -144,4 +138,3 @@ class LoginViewModel extends ChangeNotifier {
     super.dispose();
   }
 }
-
