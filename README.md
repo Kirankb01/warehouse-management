@@ -91,28 +91,9 @@ lib/
 > 📥 [Download via Amazon Appstore](https://www.amazon.com/dp/B0FJ75D6XK) 
 
 ---
-## 📸 Screenshots
+## 🖼️ Screenshots
 
-### 📊 Summary Dashboard
-> ![Summary](assets/screenshots/dashboard.jpg)
-
-### 🧾 Item Details Screen
-> ![Item Details](assets/screenshots/item_details.jpg)
-
-### 📦 All Items Screen (Grid view)
-> ![All Items](assets/screenshots/gridview.jpg)
-
-### 📦 All Items Screen (list view)
-> ![All Items](assets/screenshots/list_view.jpg)
-
-### 📈 Selling History Screen
-> ![Selling History](assets/screenshots/sales_history.jpg)
-
-### ✏️ Edit Item Screen
-> ![Edit Item](assets/screenshots/edit_item.jpg)
-
-### 📲 QR-Based Selling Screen
-> ![QR Sell](assets/screenshots/qr.jpg)
+> 👉 [Click here to view the screenshots gallery](docs/screenshots.html)
 
 ---
 
@@ -120,8 +101,7 @@ lib/
 
 **Kiran K Babu**  
 Flutter Developer | Focused on Building Clean, Scalable, and High-Performance Mobile Applications
-📍 Kerala, India  
-🔗 [LinkedIn](https://www.linkedin.com/in/yourprofile) | 🌐 [Portfolio](https://your-portfolio.com)
+📍 Kerala, India
 
 ---
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Flutter App Screenshots</title>
+    <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #111;
+          color: #fff;
+          margin: 0;
+          padding: 0;
+        }
+
+        h1 {
+          text-align: center;
+          padding: 40px 20px 10px;
+          margin: 0;
+          font-size: 2rem;
+          color: #ffffff;
+        }
+
+        .gallery {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          padding: 30px 40px;
+          max-width: 1200px;
+          margin: auto;
+        }
+
+        .card {
+          background-color: #1c1c1c;
+          border-radius: 12px;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+          overflow: hidden;
+          transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+          transform: translateY(-5px);
+        }
+
+        .card img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+
+        .card-title {
+          padding: 16px;
+          font-size: 1.05rem;
+          font-weight: 600;
+          text-align: center;
+          background-color: #222;
+          color: #f0f0f0;
+          border-top: 1px solid #333;
+        }
+
+        @media (max-width: 600px) {
+          h1 {
+            font-size: 1.5rem;
+            padding: 30px 10px 5px;
+          }
+
+          .gallery {
+            padding: 20px;
+            gap: 20px;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<h1>
+    <img src="../assets/icon/app_icon.png" alt="TrackIn App Logo" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+    TrackIn App Screenshots
+</h1>
+
+<div class="gallery">
+    <div class="card">
+        <img src="../assets/screenshots/dashboard.jpg" alt="Summary Dashboard">
+        <div class="card-title">📊 Summary Dashboard</div>
+    </div>
+    <div class="card">
+        <img src="../assets/screenshots/item_details.jpg" alt="Item Details">
+        <div class="card-title">🧾 Item Details Screen</div>
+    </div>
+    <div class="card">
+        <img src="../assets/screenshots/gridview.jpg" alt="Grid View">
+        <div class="card-title">📦 All Items Screen (Grid View)</div>
+    </div>
+    <div class="card">
+        <img src="../assets/screenshots/list_view.jpg" alt="List View">
+        <div class="card-title">📦 All Items Screen (List View)</div>
+    </div>
+    <div class="card">
+        <img src="../assets/screenshots/sales_history.jpg" alt="Selling History">
+        <div class="card-title">📈 Selling History Screen</div>
+    </div>
+    <div class="card">
+        <img src="../assets/screenshots/edit_item.jpg" alt="Edit Item">
+        <div class="card-title">✏️ Edit Item Screen</div>
+    </div>
+    <div class="card">
+        <img src="../assets/screenshots/qr.jpg" alt="QR Sell">
+        <div class="card-title">📲 QR-Based Selling Screen</div>
+    </div>
+</div>
+
+</body>
+</html>
