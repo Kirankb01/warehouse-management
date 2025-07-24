@@ -93,7 +93,7 @@ lib/
 ---
 ## 🖼️ Screenshots
 
-> 👉 [Click here to view the screenshots gallery](docs/screenshots.html)
+> 👉 [Click here to view the screenshots gallery](https://kirankb01.github.io/warehouse-management/docs/screenshots.html)
 
 ---
 
