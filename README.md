@@ -80,12 +80,6 @@ lib/
 
 ---
 
-## 🌐 Live Demo
-
-> [🔗 View Web Version (Firebase Hosting)](https://warehousemanagement-20658.web.app)
-
----
-
 ## 📱 APK for Android
 
 > 📥 [Download via Amazon Appstore](https://www.amazon.com/dp/B0FJ75D6XK) 
